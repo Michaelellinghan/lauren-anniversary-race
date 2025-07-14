@@ -535,6 +535,14 @@
                     <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest"></span></p>
                 </div>
                 <hr class="my-4 border-pink-300">
+                <div class="mt-4 text-center">
+                    <h3 class="font-bold text-xl text-pink-500">Photo Finish!</h3>
+                    <p class="mb-4">Upload a victory selfie to remember this moment!</p>
+                    <label for="photo-upload" class="btn cursor-pointer">Upload Photo 📸</label>
+                    <input type="file" id="photo-upload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                    <img id="photo-finish-img" class="mt-4 rounded-lg shadow-lg max-w-full h-auto mx-auto" style="display: none;">
+                </div>
+                <hr class="my-4 border-pink-300">
                 <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
                 <button onclick="navigateTo(13)" class="btn mt-8">What Now?</button>
             </div>
@@ -782,7 +790,7 @@
 
         // --- Quiz Logic ---
         const souvenirs = {
-            1: '☎️', 2: '🎭', 3: '👑', 4: '🍺'
+            1: '☎️', 2: '�', 3: '👑', 4: '🍺'
         };
 
         const answers = {
@@ -909,6 +917,20 @@
             }, 1000);
         }
         
+        // --- Photo Finish ---
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgEl = document.getElementById('photo-finish-img');
+                    imgEl.src = e.target.result;
+                    imgEl.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         // --- Confetti ---
         const confettiCanvas = document.getElementById('confetti-canvas');
         const confettiCtx = confettiCanvas.getContext('2d');
@@ -965,3 +987,4 @@
 
 </body>
 </html>
+�
