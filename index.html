@@ -152,7 +152,13 @@
         }
         
         .fact-box {
-            @apply bg-yellow-200/80 backdrop-blur-sm p-4 rounded-2xl text-gray-800 italic mt-4 text-sm;
+            @apply bg-yellow-200/80 backdrop-blur-sm p-4 rounded-2xl text-gray-800 italic mt-4 text-sm flex items-center gap-4;
+        }
+
+        .fox-mascot {
+            width: 50px;
+            height: auto;
+            flex-shrink: 0;
         }
 
     </style>
@@ -160,6 +166,37 @@
 <body class="text-gray-800">
 
     <canvas id="confetti-canvas"></canvas>
+
+    <!-- Fox Mascot SVG Definition -->
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <g id="felix-the-fox">
+            <!-- Body -->
+            <path d="M 50 95 C 20 95, 20 60, 50 60 C 80 60, 80 95, 50 95 Z" fill="#E67E22"/>
+            <!-- Head -->
+            <path d="M 50 10 C 20 10, 20 65, 50 65 C 80 65, 80 10, 50 10 Z" fill="#E67E22"/>
+            <!-- Ears -->
+            <path d="M 25 20 L 15 5 L 35 15 Z" fill="#E67E22"/>
+            <path d="M 75 20 L 85 5 L 65 15 Z" fill="#E67E22"/>
+            <path d="M 27 18 L 20 8 L 34 15 Z" fill="#2C3E50"/>
+            <path d="M 73 18 L 80 8 L 66 15 Z" fill="#2C3E50"/>
+            <!-- Face -->
+            <path d="M 50 45 C 40 55, 60 55, 50 45 L 35 60 Q 50 70 65 60 Z" fill="#ECF0F1"/>
+            <circle cx="40" cy="40" r="3" fill="#2C3E50"/>
+            <circle cx="60" cy="40" r="3" fill="#2C3E50"/>
+            <circle cx="50" cy="50" r="2" fill="#2C3E50"/>
+            <!-- Bowler Hat -->
+            <path d="M 50 5 C 30 5, 30 20, 50 20 C 70 20, 70 5, 50 5 Z" fill="#2C3E50"/>
+            <rect x="25" y="18" width="50" height="4" rx="2" fill="#2C3E50"/>
+        </g>
+        <g id="felix-celebrating">
+            <use href="#felix-the-fox"/>
+            <!-- Arms up -->
+            <path d="M 20 75 C 10 65, 10 55, 20 55" stroke="#E67E22" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M 80 75 C 90 65, 90 55, 80 55" stroke="#E67E22" stroke-width="8" fill="none" stroke-linecap="round"/>
+        </g>
+      </defs>
+    </svg>
 
     <!-- Train Transition Overlay -->
     <div id="train-transition">
@@ -182,7 +219,8 @@
 
     <!-- Emergency Stop Modal -->
     <div id="emergency-modal" onclick="hideEmergencyModal()">
-        <div class="bg-white p-8 rounded-2xl text-center shadow-lg max-w-sm">
+        <div class="bg-white p-8 rounded-2xl text-center shadow-lg max-w-sm flex flex-col items-center">
+             <svg class="fox-mascot mb-4"><use href="#felix-the-fox"></use></svg>
             <h3 class="font-lobster text-3xl text-red-600 mb-4">Emergency Stop!</h3>
             <p id="emergency-message" class="text-lg text-gray-700"></p>
             <button onclick="hideEmergencyModal(event)" class="btn mt-6">Resume Race</button>
@@ -229,6 +267,7 @@
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
                 <div class="fact-box">
+                     <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> Stanmore is the northern terminus of the Jubilee Line!</p>
                 </div>
                 <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
@@ -247,6 +286,7 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <div class="fact-box">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> The poet Robert Browning coined the name 'Little Venice' for this area in the 19th century.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -259,7 +299,10 @@
         <div id="page-3" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 1</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p>Find a garden-lined street with a name that links to a city in the South West of England. Head along this street until you reach a mini roundabout.</p>
+                <div class="flex items-center justify-center gap-4">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <p>Find a garden-lined street with a name that links to a city in the South West of England. Head along this street until you reach a mini roundabout.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
                 <p class="text-center">What is on the corner between Formosa Street and Bristol Gardens?</p>
@@ -308,6 +351,7 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Well done! Now, let's head to the heart of Theatreland.</p>
                  <div class="fact-box">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> Leicester Square was named after Robert Sidney, the 2nd Earl of Leicester, who built a large house there in the 1630s.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -320,7 +364,10 @@
         <div id="page-5" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 2</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p>Find a famous restaurant located on West Street with ties to one of our children.</p>
+                <div class="flex items-center justify-center gap-4">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <p>Find a famous restaurant located on West Street with ties to one of our children.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
                 <p class="text-center">What letter is repeated twice on the clock?</p>
@@ -371,6 +418,7 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time for a touch of grandeur.</p>
                 <div class="fact-box">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> Green Park is the quietest of the central Royal Parks, with no lakes or buildings and very few formal flowerbeds.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -383,7 +431,10 @@
         <div id="page-7" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 3</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p>Find the magnificent private mansion that has been used as a filming location for The Crawley’s London home in Downton Abbey located at 14 Cleveland Road. It overlooks Green Park and is a short walk from here.</p>
+                <div class="flex items-center justify-center gap-4">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <p>Find the magnificent private mansion that has been used as a filming location for The Crawley’s London home in Downton Abbey located at 14 Cleveland Road. It overlooks Green Park and is a short walk from here.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
                 <p class="text-center">What animal is seen above the arch in the doorway?</p>
@@ -433,6 +484,7 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time to cross the river.</p>
                  <div class="fact-box">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> The current London Bridge is only from 1973. Several older bridges have existed at this spot for nearly 2,000 years!</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -445,7 +497,10 @@
         <div id="page-9" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 4</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p>Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
+                <div class="flex items-center justify-center gap-4">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <p>Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
                 <p class="text-center">When was this inn established?</p>
@@ -495,6 +550,7 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Perfect. One more destination before we go find our hotel at 72 Prebend Street.</p>
                  <div class="fact-box">
+                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
                     <p><strong>Did you know?</strong> Islington has more theatres than any other part of London, including the famous Almeida and Sadler's Wells.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -519,6 +575,9 @@
             <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
+                <div class="flex justify-center my-4">
+                    <svg class="w-24 h-24"><use href="#felix-celebrating"></use></svg>
+                </div>
                 <div class="text-xl">
                     <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
                 </div>
@@ -790,7 +849,7 @@
 
         // --- Quiz Logic ---
         const souvenirs = {
-            1: '☎️', 2: '�', 3: '👑', 4: '🍺'
+            1: '☎️', 2: '🎭', 3: '👑', 4: '🍺'
         };
 
         const answers = {
@@ -987,4 +1046,3 @@
 
 </body>
 </html>
-�
