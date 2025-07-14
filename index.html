@@ -85,6 +85,54 @@
             0% { left: -200px; }
             100% { left: 100vw; } /* Move across the full screen width */
         }
+
+        /* Emergency Stop Button & Modal */
+        #emergency-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #c0392b;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 10px;
+            text-align: center;
+            line-height: 1.2;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border: 2px solid white;
+            z-index: 90;
+        }
+        #emergency-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 110;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Map Styling */
+        .map-container {
+            @apply bg-white/80 backdrop-blur-sm p-4 rounded-3xl shadow-2xl my-6;
+        }
+        .map-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw-line 2s ease-in-out forwards;
+        }
+        @keyframes draw-line {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
     </style>
 </head>
 <body class="text-gray-800">
@@ -92,26 +140,33 @@
     <!-- Train Transition Overlay -->
     <div id="train-transition">
         <svg id="train" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-            <!-- Train Body -->
-            <rect x="10" y="20" width="180" height="60" rx="10" fill="#c0392b"/>
-            <!-- Roof -->
-            <rect x="10" y="15" width="180" height="10" rx="5" fill="#e74c3c"/>
+            <!-- Jubilee Line Colours -->
+            <rect x="10" y="20" width="180" height="60" rx="10" fill="#A0A5A9"/> <!-- Silver -->
+            <rect x="10" y="15" width="180" height="10" rx="5" fill="#6A7073"/> <!-- Dark Grey -->
+            <rect y="58" width="200" height="10" fill="#6A7073"/> <!-- Dark Grey Stripe -->
             <!-- Windows -->
-            <rect x="25" y="30" width="40" height="25" fill="#ecf0f1"/>
-            <rect x="80" y="30" width="40" height="25" fill="#ecf0f1"/>
-            <rect x="135" y="30" width="40" height="25" fill="#ecf0f1"/>
-            <!-- Stripe -->
-            <rect y="58" width="200" height="10" fill="#3498db"/>
+            <rect x="25" y="30" width="40" height="25" fill="#2c3e50"/>
+            <rect x="80" y="30" width="40" height="25" fill="#2c3e50"/>
+            <rect x="135" y="30" width="40" height="25" fill="#2c3e50"/>
              <!-- Front light -->
-            <circle cx="185" cy="65" r="5" fill="yellow" />
+            <circle cx="185" cy="45" r="5" fill="yellow" />
             <!-- Wheels -->
             <circle cx="45" cy="85" r="10" fill="#2c3e50"/>
             <circle cx="155" cy="85" r="10" fill="#2c3e50"/>
         </svg>
     </div>
 
+    <!-- Emergency Stop Modal -->
+    <div id="emergency-modal" onclick="hideEmergencyModal()">
+        <div class="bg-white p-8 rounded-2xl text-center shadow-lg max-w-sm">
+            <h3 class="font-lobster text-3xl text-red-600 mb-4">Emergency Stop!</h3>
+            <p class="text-lg text-gray-700">Time for an emergency cup of tea and a biscuit! Take a 10-minute break, racer!</p>
+            <button onclick="hideEmergencyModal()" class="btn mt-6">Resume Race</button>
+        </div>
+    </div>
+
     <!-- Countdown Timer Header -->
-    <header class="sticky top-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-2 text-white text-center shadow-lg z-50">
+    <header class="sticky top-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-2 text-white text-center shadow-lg z-40">
         <div id="countdown" class="flex justify-center items-center space-x-2 md:space-x-4">
             <!-- Countdown will be injected here by JS -->
         </div>
@@ -143,6 +198,9 @@
         <!-- Page 1: Stanmore Start -->
         <div id="page-1" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Your Grand Adventure Begins!</h1>
+             <div class="map-container">
+                <svg id="map-1" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
                 <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
@@ -155,6 +213,9 @@
         <!-- Page 2: Warwick Avenue Travel -->
         <div id="page-2" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">To 'Little Venice'</h1>
+             <div class="map-container">
+                <svg id="map-2" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <hr class="my-6 border-pink-300">
@@ -175,7 +236,7 @@
                 <div class="mt-4 text-center">
                     <input id="answer-1" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-1" class="mt-2 h-6 font-bold"></p>
-                    <div class="mt-4 space-x-4">
+                    <div id="q1-buttons" class="mt-4 space-x-4">
                         <button onclick="checkAnswer(1)" class="btn">Submit Answer</button>
                         <button onclick="giveUp(1)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
@@ -195,7 +256,7 @@
                         <li><b>Rembrandt Gardens:</b> A beautiful and tranquil canalside garden, perfect for a brief, quiet moment.</li>
                         <li><b>Walk the Waterway:</b> How about a 5-10 minute stroll along the canal towpath towards Paddington?</li>
                     </ul>
-                    <div id="selfie-prompt-1" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                    <div id="selfie-prompt-1" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
                 <div class="text-center">
                     <button onclick="navigateTo(4)" class="btn mt-8">Next Stage</button>
@@ -206,6 +267,9 @@
         <!-- Page 4: Leicester Square Travel -->
         <div id="page-4" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Heart of Theatreland</h1>
+            <div class="map-container">
+                <svg id="map-4" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Well done! Now, let's head to the heart of Theatreland.</p>
                 <hr class="my-6 border-pink-300">
@@ -226,7 +290,7 @@
                 <div class="mt-4 text-center">
                     <input id="answer-2" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-2" class="mt-2 h-6 font-bold"></p>
-                    <div class="mt-4 space-x-4">
+                    <div id="q2-buttons" class="mt-4 space-x-4">
                         <button onclick="checkAnswer(2)" class="btn">Submit Answer</button>
                         <button onclick="giveUp(2)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
@@ -248,7 +312,7 @@
                         <li><b>Covent Garden's Street Performers:</b> Soak up the lively atmosphere.</li>
                         <li><b>Evening Plans:</b> We could come back for 9:05 to see Rachel Zegler on the balcony of the London Palladium!</li>
                     </ul>
-                    <div id="selfie-prompt-2" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                    <div id="selfie-prompt-2" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
                 <div class="text-center">
                     <button onclick="navigateTo(6)" class="btn mt-8">Next Stage</button>
@@ -259,6 +323,9 @@
         <!-- Page 6: Green Park Travel -->
         <div id="page-6" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">A Touch of Grandeur</h1>
+            <div class="map-container">
+                <svg id="map-6" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time for a touch of grandeur.</p>
                 <hr class="my-6 border-pink-300">
@@ -279,7 +346,7 @@
                 <div class="mt-4 text-center">
                     <input id="answer-3" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-3" class="mt-2 h-6 font-bold"></p>
-                    <div class="mt-4 space-x-4">
+                    <div id="q3-buttons" class="mt-4 space-x-4">
                         <button onclick="checkAnswer(3)" class="btn">Submit Answer</button>
                         <button onclick="giveUp(3)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
@@ -300,7 +367,7 @@
                         <li><b>Spencer House:</b> Another magnificent aristocratic town house, Princess Diana's ancestral home.</li>
                         <li><b>Fortnum & Mason:</b> A quick walk through this famous luxury department store is an experience in itself.</li>
                     </ul>
-                    <div id="selfie-prompt-3" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                    <div id="selfie-prompt-3" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
                 <div class="text-center">
                     <button onclick="navigateTo(8)" class="btn mt-8">Next Stage</button>
@@ -311,6 +378,9 @@
         <!-- Page 8: London Bridge Travel -->
         <div id="page-8" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Cross the River</h1>
+            <div class="map-container">
+                <svg id="map-8" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time to cross the river.</p>
                 <hr class="my-6 border-pink-300">
@@ -331,7 +401,7 @@
                 <div class="mt-4 text-center">
                     <input id="answer-4" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-4" class="mt-2 h-6 font-bold"></p>
-                    <div class="mt-4 space-x-4">
+                    <div id="q4-buttons" class="mt-4 space-x-4">
                         <button onclick="checkAnswer(4)" class="btn">Submit Answer</button>
                         <button onclick="giveUp(4)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
@@ -352,7 +422,7 @@
                         <li><b>The Golden Hinde:</b> A beautiful full-size reconstruction of Sir Francis Drake's 16th-century galleon.</li>
                         <li><b>Shakespeare's Globe:</b> A little further along the river bank is the famous Globe theatre.</li>
                     </ul>
-                    <div id="selfie-prompt-4" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                    <div id="selfie-prompt-4" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
                 <div class="text-center">
                     <button onclick="navigateTo(10)" class="btn mt-8">Next Stage</button>
@@ -363,6 +433,9 @@
         <!-- Page 10: Islington Travel -->
         <div id="page-10" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">The Final Leg!</h1>
+            <div class="map-container">
+                <svg id="map-10" viewBox="0 0 100 100" class="w-full h-auto"></svg>
+            </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Perfect. One more destination before we go find our hotel at 72 Prebend Street.</p>
                 <hr class="my-6 border-pink-300">
@@ -404,17 +477,44 @@
                     </ul>
                 </div>
                 <p class="font-bold text-xl text-center mt-8">Ready for tomorrow? Michael will reveal the plans then.</p>
+                <div class="text-center">
+                    <button onclick="navigateTo(12)" class="btn mt-8">Finish Today's Race!</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 12: Race Log -->
+        <div id="page-12" class="page text-center text-white">
+            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
+                <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
+                <div class="text-xl">
+                    <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
+                </div>
+                <div class="text-xl">
+                    <p><strong>Selfies Taken:</strong> <span id="log-selfies"></span></p>
+                </div>
+                <div class="text-xl">
+                    <p><strong>Total Race Time:</strong> <span id="log-time"></span></p>
+                </div>
+                <hr class="my-4 border-pink-300">
+                <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
             </div>
         </div>
 
-
     </div>
+
+    <button id="emergency-btn" onclick="showEmergencyModal()">EMERGENCY<br>STOP</button>
 
     <script>
         // --- State Management ---
         let currentPage = 0;
         const pages = document.querySelectorAll('.page');
         const wrongAttempts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+        let raceStartTime;
+        let checkpointsCompleted = 0;
+        let selfiesTaken = 0;
+        let raceTimerInterval;
 
         // --- Countdown Timer ---
         const countdownDate = new Date("2025-07-26T14:30:00").getTime();
@@ -451,12 +551,64 @@
 
         }, 1000);
 
+        // --- Map Data & Functions ---
+        const locations = {
+            home: { x: 5, y: 5, name: "Home" },
+            stanmore: { x: 20, y: 20, name: "Stanmore" },
+            warwick: { x: 45, y: 50, name: "Warwick Ave" },
+            leicester: { x: 65, y: 60, name: "Leicester Sq" },
+            greenpark: { x: 55, y: 75, name: "Green Park" },
+            londonbridge: { x: 80, y: 70, name: "London Bridge" },
+            islington: { x: 75, y: 40, name: "Islington" }
+        };
+
+        function drawMap(svgId, fromLoc, toLoc) {
+            const svg = document.getElementById(svgId);
+            svg.innerHTML = ''; // Clear previous map
+            
+            // Draw all locations
+            for (const key in locations) {
+                const loc = locations[key];
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", loc.x);
+                circle.setAttribute("cy", loc.y);
+                circle.setAttribute("r", "2");
+                circle.setAttribute("fill", "#6A7073");
+                svg.appendChild(circle);
+
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", loc.x + 3);
+                text.setAttribute("y", loc.y + 1);
+                text.setAttribute("font-size", "4");
+                text.setAttribute("font-family", "Poppins");
+                text.textContent = loc.name;
+                svg.appendChild(text);
+            }
+
+            // Draw animated path
+            if (fromLoc && toLoc) {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", `M ${fromLoc.x} ${fromLoc.y} L ${toLoc.x} ${toLoc.y}`);
+                path.setAttribute("stroke", "#e73c7e");
+                path.setAttribute("stroke-width", "1");
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke-linecap", "round");
+                path.setAttribute("stroke-dasharray", "2 2");
+                path.classList.add("map-path");
+                svg.appendChild(path);
+            }
+        }
+
         // --- Navigation ---
         function navigateTo(pageIndex) {
+            if (pageIndex === 1 && !raceStartTime) {
+                raceStartTime = new Date();
+                startRaceTimer();
+            }
+
             const trainTransition = document.getElementById('train-transition');
             trainTransition.style.display = 'flex';
             
-            // Clone the train to restart the animation
             const oldTrain = document.getElementById('train');
             const newTrain = oldTrain.cloneNode(true);
             oldTrain.parentNode.replaceChild(newTrain, oldTrain);
@@ -467,7 +619,23 @@
                 pages[currentPage].classList.add('active');
                 window.scrollTo(0, 0);
                 trainTransition.style.display = 'none';
-            }, 1500); // Match animation duration
+
+                // Handle map drawing
+                if (pageIndex === 1) drawMap('map-1', locations.home, locations.stanmore);
+                if (pageIndex === 2) drawMap('map-2', locations.stanmore, locations.warwick);
+                if (pageIndex === 4) drawMap('map-4', locations.warwick, locations.leicester);
+                if (pageIndex === 6) drawMap('map-6', locations.leicester, locations.greenpark);
+                if (pageIndex === 8) drawMap('map-8', locations.greenpark, locations.londonbridge);
+                if (pageIndex === 10) drawMap('map-10', locations.londonbridge, locations.islington);
+                
+                // Handle Race Log
+                if (pageIndex === 12) {
+                    clearInterval(raceTimerInterval);
+                    document.getElementById('log-checkpoints').textContent = checkpointsCompleted;
+                    document.getElementById('log-selfies').textContent = selfiesTaken;
+                }
+
+            }, 1500);
         }
 
         // --- Quiz Logic ---
@@ -494,7 +662,7 @@
                 feedbackEl.textContent = 'Well done! That\'s correct!';
                 feedbackEl.classList.remove('text-red-500');
                 feedbackEl.classList.add('text-green-500');
-                revealInfo(checkpoint, true); // Pass true for correct answer
+                revealInfo(checkpoint, true);
             } else {
                 wrongAttempts[checkpoint]++;
                 feedbackEl.classList.add('text-red-500');
@@ -519,19 +687,37 @@
 
         function revealInfo(checkpoint, isCorrect) {
             document.getElementById(`info-${checkpoint}`).classList.remove('hidden');
+            checkpointsCompleted++;
             
             if (isCorrect) {
+                selfiesTaken++;
                 const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
                 selfieEl.innerHTML = `📸 ${selfiePrompts[checkpoint]}`;
                 selfieEl.style.display = 'block';
-            } else {
-                const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
-                selfieEl.style.display = 'none';
             }
-
+            
             document.getElementById(`answer-${checkpoint}`).disabled = true;
-            const actionButtons = document.querySelector(`#page-${currentPage} .mt-4.space-x-4`);
-            if(actionButtons) actionButtons.style.display = 'none';
+            document.getElementById(`q${checkpoint}-buttons`).style.display = 'none';
+        }
+
+        // --- Emergency Stop ---
+        function showEmergencyModal() {
+            document.getElementById('emergency-modal').style.display = 'flex';
+        }
+        function hideEmergencyModal() {
+            document.getElementById('emergency-modal').style.display = 'none';
+        }
+
+        // --- Race Timer ---
+        function startRaceTimer() {
+            const timeLogEl = document.getElementById('log-time');
+            raceTimerInterval = setInterval(() => {
+                const now = new Date();
+                const diff = now - raceStartTime;
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                timeLogEl.textContent = `${minutes}m ${seconds}s`;
+            }, 1000);
         }
 
         // Initialize first page
