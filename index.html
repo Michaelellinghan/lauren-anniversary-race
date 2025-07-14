@@ -613,15 +613,8 @@
                     <h3 class="font-bold text-xl text-pink-500 text-center mb-2">Felix's Comments:</h3>
                     <p id="log-comments" class="text-center italic"></p>
                 </div>
-                <div class="mt-4 text-center">
-                    <h3 class="font-bold text-xl text-pink-500">Photo Finish!</h3>
-                    <p class="mb-4">Upload a victory selfie to remember this moment!</p>
-                    <label for="photo-upload" class="btn cursor-pointer">Upload Photo 📸</label>
-                    <input type="file" id="photo-upload" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
-                    <div id="photo-finish-container" class="relative w-full max-w-md mx-auto mt-4" style="display: none;">
-                        <img id="photo-finish-img" class="rounded-lg shadow-lg w-full h-auto">
-                        <canvas id="photobomb-canvas" class="absolute top-0 left-0 w-full h-full"></canvas>
-                    </div>
+                <div id="final-selfie-prompt" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold">
+                    📸 Time for one last victory selfie at the finish line!
                 </div>
                 <hr class="my-4 border-pink-300">
                 <p class="text-lg text-center">Well done, Lauren! You've successfully completed your anniversary adventure across London.</p>
@@ -635,7 +628,7 @@
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p class="text-xl text-center">...But for now, what would you like to do?</p>
                  <div class="info-box text-gray-800">
-                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">For Coffee (Hyper-Local Gems)</h3>
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">For Coffee</h3>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Canal No.5:</b> A charming, independent café located directly on the Regent's Canal towpath.</li>
                         <li><b>The Common:</b> A top-quality, minimalist coffee shop focused on expertly made coffee.</li>
@@ -653,7 +646,7 @@
                     </ul>
                 </div>
                  <div class="info-box text-gray-800">
-                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">Closer, More Immediate Things To Do</h3>
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">Things To Do</h3>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Explore Camden Passage:</b> Famous for its antique shops, quirky boutiques, and market stalls.</li>
                         <li><b>A Walk Along the Regent's Canal:</b> We can be on the towpath in under a minute!</li>
@@ -980,42 +973,6 @@
             }, 1000);
         }
         
-        // --- Photo Finish ---
-        function handlePhotoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const container = document.getElementById('photo-finish-container');
-                    const imgEl = document.getElementById('photo-finish-img');
-                    const canvas = document.getElementById('photobomb-canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    const userImage = new Image();
-                    userImage.onload = function() {
-                        canvas.width = userImage.width;
-                        canvas.height = userImage.height;
-                        imgEl.src = e.target.result;
-                        container.style.display = 'block';
-
-                        const foxSVG = document.getElementById('felix-photobomb');
-                        const foxXML = new XMLSerializer().serializeToString(foxSVG);
-                        const foxDataURL = 'data:image/svg+xml;base64,' + btoa(foxXML);
-                        
-                        const foxImage = new Image();
-                        foxImage.onload = function() {
-                            const foxSize = canvas.width * 0.25;
-                            const margin = canvas.width * 0.05;
-                            ctx.drawImage(foxImage, canvas.width - foxSize - margin, canvas.height - foxSize - margin, foxSize, foxSize);
-                        };
-                        foxImage.src = foxDataURL;
-                    };
-                    userImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
         // --- Confetti ---
         const confettiCanvas = document.getElementById('confetti-canvas');
         const confettiCtx = confettiCanvas.getContext('2d');
