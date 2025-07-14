@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Race Across London! 🚆</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Lobster&display=swap" rel="stylesheet">
@@ -14,6 +15,7 @@
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
+            overflow-x: hidden;
         }
 
         @keyframes gradient {
@@ -44,6 +46,9 @@
             @apply inline-block px-8 py-4 text-lg font-bold text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out;
             background-color: #e73c7e;
             border: 2px solid white;
+        }
+        .btn-small {
+            @apply px-4 py-2 text-sm;
         }
 
         .btn:hover {
@@ -78,7 +83,7 @@
             position: absolute;
             left: -200px; /* Start off-screen */
             width: 150px;
-            animation: move-train 1.5s ease-in-out forwards;
+            animation: move-train 1.2s ease-in-out forwards;
         }
 
         @keyframes move-train {
@@ -93,16 +98,18 @@
             right: 20px;
             background-color: #c0392b;
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            font-size: 10px;
+            font-size: 14px;
             text-align: center;
-            line-height: 1.2;
             font-weight: bold;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            border: 2px solid white;
+            border: 3px solid white;
             z-index: 90;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #emergency-modal {
             position: fixed;
@@ -120,22 +127,33 @@
         
         /* Map Styling */
         .map-container {
-            @apply bg-white/80 backdrop-blur-sm p-4 rounded-3xl shadow-2xl my-6;
+            @apply bg-white/80 backdrop-blur-sm p-4 rounded-3xl shadow-2xl my-6 relative;
         }
         .map-path {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
-            animation: draw-line 2s ease-in-out forwards;
+            animation: draw-line 2s ease-in-out forwards 0.5s;
         }
         @keyframes draw-line {
             to {
                 stroke-dashoffset: 0;
             }
         }
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
+            pointer-events: none;
+        }
 
     </style>
 </head>
 <body class="text-gray-800">
+
+    <canvas id="confetti-canvas"></canvas>
 
     <!-- Train Transition Overlay -->
     <div id="train-transition">
@@ -160,8 +178,8 @@
     <div id="emergency-modal" onclick="hideEmergencyModal()">
         <div class="bg-white p-8 rounded-2xl text-center shadow-lg max-w-sm">
             <h3 class="font-lobster text-3xl text-red-600 mb-4">Emergency Stop!</h3>
-            <p class="text-lg text-gray-700">Time for an emergency cup of tea and a biscuit! Take a 10-minute break, racer!</p>
-            <button onclick="hideEmergencyModal()" class="btn mt-6">Resume Race</button>
+            <p id="emergency-message" class="text-lg text-gray-700"></p>
+            <button onclick="hideEmergencyModal(event)" class="btn mt-6">Resume Race</button>
         </div>
     </div>
 
@@ -183,6 +201,7 @@
                 <p class="text-lg">Welcome to your Race Across London! (Legally different from Race Across the World 😉)</p>
                 <p>Lauren, I hope you’re ready for a special anniversary adventure I have prepared for you!</p>
                 <p>This is your very own 'Race Across London' – an exciting journey with various checkpoints and questions!</p>
+                <p class="text-sm text-center italic text-red-500">P.S. You can press the red 'STOP' button at any time to pause the race timer!</p>
                 <hr class="my-6 border-pink-300">
                 <h3 class="font-bold text-xl text-pink-500">Pre-Race Challenge:</h3>
                 <p>Your first mission is to prepare a suitcase for 4 days and head to 78 Tattershall drive!</p>
@@ -237,9 +256,11 @@
                     <input id="answer-1" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-1" class="mt-2 h-6 font-bold"></p>
                     <div id="q1-buttons" class="mt-4 space-x-4">
-                        <button onclick="checkAnswer(1)" class="btn">Submit Answer</button>
+                        <button onclick="checkAnswer(1)" class="btn">Submit</button>
                         <button onclick="giveUp(1)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
+                     <button onclick="showHint(1)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
+                    <p id="hint-1" class="mt-2 text-blue-200 italic" style="display: none;"></p>
                 </div>
             </div>
             
@@ -291,9 +312,11 @@
                     <input id="answer-2" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-2" class="mt-2 h-6 font-bold"></p>
                     <div id="q2-buttons" class="mt-4 space-x-4">
-                        <button onclick="checkAnswer(2)" class="btn">Submit Answer</button>
+                        <button onclick="checkAnswer(2)" class="btn">Submit</button>
                         <button onclick="giveUp(2)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
+                    <button onclick="showHint(2)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
+                    <p id="hint-2" class="mt-2 text-blue-200 italic" style="display: none;"></p>
                 </div>
             </div>
             
@@ -347,9 +370,11 @@
                     <input id="answer-3" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-3" class="mt-2 h-6 font-bold"></p>
                     <div id="q3-buttons" class="mt-4 space-x-4">
-                        <button onclick="checkAnswer(3)" class="btn">Submit Answer</button>
+                        <button onclick="checkAnswer(3)" class="btn">Submit</button>
                         <button onclick="giveUp(3)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
+                     <button onclick="showHint(3)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
+                    <p id="hint-3" class="mt-2 text-blue-200 italic" style="display: none;"></p>
                 </div>
             </div>
             
@@ -402,9 +427,11 @@
                     <input id="answer-4" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-4" class="mt-2 h-6 font-bold"></p>
                     <div id="q4-buttons" class="mt-4 space-x-4">
-                        <button onclick="checkAnswer(4)" class="btn">Submit Answer</button>
+                        <button onclick="checkAnswer(4)" class="btn">Submit</button>
                         <button onclick="giveUp(4)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
+                     <button onclick="showHint(4)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
+                    <p id="hint-4" class="mt-2 text-blue-200 italic" style="display: none;"></p>
                 </div>
             </div>
             
@@ -504,7 +531,7 @@
 
     </div>
 
-    <button id="emergency-btn" onclick="showEmergencyModal()">EMERGENCY<br>STOP</button>
+    <button id="emergency-btn" onclick="showEmergencyModal()">STOP</button>
 
     <script>
         // --- State Management ---
@@ -515,6 +542,34 @@
         let checkpointsCompleted = 0;
         let selfiesTaken = 0;
         let raceTimerInterval;
+        let isPaused = false;
+        let pauseStartTime;
+
+        // --- Sound Effects ---
+        let soundsReady = false;
+        const synth = new Tone.Synth().toDestination();
+        const noiseSynth = new Tone.NoiseSynth({
+            noise: { type: 'white' },
+            envelope: { attack: 0.005, decay: 0.1, sustain: 0 }
+        }).toDestination();
+        
+        document.body.addEventListener('click', async () => {
+            if (!soundsReady) {
+                await Tone.start();
+                soundsReady = true;
+            }
+        }, { once: true });
+
+        function playSound(type) {
+            if (!soundsReady) return;
+            if (type === 'correct') {
+                synth.triggerAttackRelease("C5", "8n");
+            } else if (type === 'wrong') {
+                synth.triggerAttackRelease("C3", "8n");
+            } else if (type === 'transition') {
+                noiseSynth.triggerAttackRelease("0.5");
+            }
+        }
 
         // --- Countdown Timer ---
         const countdownDate = new Date("2025-07-26T14:30:00").getTime();
@@ -553,18 +608,23 @@
 
         // --- Map Data & Functions ---
         const locations = {
-            home: { x: 5, y: 5, name: "Home" },
+            hemel: { x: 5, y: 5, name: "Hemel" },
             stanmore: { x: 20, y: 20, name: "Stanmore" },
             warwick: { x: 45, y: 50, name: "Warwick Ave" },
-            leicester: { x: 65, y: 60, name: "Leicester Sq" },
+            leicester: { x: 65, y: 60, name: "Leic. Sq." },
             greenpark: { x: 55, y: 75, name: "Green Park" },
-            londonbridge: { x: 80, y: 70, name: "London Bridge" },
+            londonbridge: { x: 80, y: 70, name: "Lon. Bridge" },
             islington: { x: 75, y: 40, name: "Islington" }
         };
 
+        const londonMapSvg = `
+            <path d="M 10 80 Q 50 90, 90 60" stroke="#a2d5f2" stroke-width="4" fill="none" opacity="0.5" />
+            <text x="50" y="95" font-size="5" fill="#a2d5f2" text-anchor="middle">River Thames</text>
+        `;
+
         function drawMap(svgId, fromLoc, toLoc) {
             const svg = document.getElementById(svgId);
-            svg.innerHTML = ''; // Clear previous map
+            svg.innerHTML = londonMapSvg; // Add background map
             
             // Draw all locations
             for (const key in locations) {
@@ -606,6 +666,7 @@
                 startRaceTimer();
             }
 
+            playSound('transition');
             const trainTransition = document.getElementById('train-transition');
             trainTransition.style.display = 'flex';
             
@@ -621,21 +682,22 @@
                 trainTransition.style.display = 'none';
 
                 // Handle map drawing
-                if (pageIndex === 1) drawMap('map-1', locations.home, locations.stanmore);
+                if (pageIndex === 1) drawMap('map-1', locations.hemel, locations.stanmore);
                 if (pageIndex === 2) drawMap('map-2', locations.stanmore, locations.warwick);
                 if (pageIndex === 4) drawMap('map-4', locations.warwick, locations.leicester);
                 if (pageIndex === 6) drawMap('map-6', locations.leicester, locations.greenpark);
                 if (pageIndex === 8) drawMap('map-8', locations.greenpark, locations.londonbridge);
                 if (pageIndex === 10) drawMap('map-10', locations.londonbridge, locations.islington);
                 
-                // Handle Race Log
+                // Handle Race Log & Confetti
                 if (pageIndex === 12) {
                     clearInterval(raceTimerInterval);
                     document.getElementById('log-checkpoints').textContent = checkpointsCompleted;
                     document.getElementById('log-selfies').textContent = selfiesTaken;
+                    launchConfetti();
                 }
 
-            }, 1500);
+            }, 1200);
         }
 
         // --- Quiz Logic ---
@@ -644,6 +706,13 @@
             2: { accepted: ['v'], reveal: 'V' },
             3: { accepted: ['a lion', 'lion'], reveal: 'A Lion' },
             4: { accepted: ['1542'], reveal: '1542' }
+        };
+
+        const hints = {
+            1: "Think of a classic red box, used for making calls before mobiles existed.",
+            2: "This letter is also a Roman numeral.",
+            3: "It's known as the 'king of the jungle'.",
+            4: "It was established during the reign of King Henry VIII."
         };
 
         const selfiePrompts = {
@@ -659,11 +728,13 @@
             const providedAnswer = inputEl.value.trim().toLowerCase();
             
             if (answers[checkpoint].accepted.includes(providedAnswer)) {
+                playSound('correct');
                 feedbackEl.textContent = 'Well done! That\'s correct!';
                 feedbackEl.classList.remove('text-red-500');
                 feedbackEl.classList.add('text-green-500');
                 revealInfo(checkpoint, true);
             } else {
+                playSound('wrong');
                 wrongAttempts[checkpoint]++;
                 feedbackEl.classList.add('text-red-500');
                 feedbackEl.classList.remove('text-green-500');
@@ -700,24 +771,103 @@
             document.getElementById(`q${checkpoint}-buttons`).style.display = 'none';
         }
 
+        function showHint(checkpoint) {
+            const hintEl = document.getElementById(`hint-${checkpoint}`);
+            hintEl.textContent = hints[checkpoint];
+            hintEl.style.display = 'block';
+        }
+
         // --- Emergency Stop ---
+        const emergencyMessages = [
+            "Time for an emergency cup of tea and a biscuit!",
+            "Detour to the nearest cake shop! Race is paused.",
+            "Mandatory 5-minute sightseeing break has been activated!",
+            "Quick, hide! A ticket inspector is coming! (Just kidding, timer paused.)"
+        ];
+
         function showEmergencyModal() {
+            if (raceTimerInterval) {
+                isPaused = true;
+                pauseStartTime = new Date();
+                clearInterval(raceTimerInterval);
+            }
+            const messageEl = document.getElementById('emergency-message');
+            messageEl.textContent = emergencyMessages[Math.floor(Math.random() * emergencyMessages.length)];
             document.getElementById('emergency-modal').style.display = 'flex';
         }
-        function hideEmergencyModal() {
+        function hideEmergencyModal(event) {
+            event.stopPropagation();
+            if (raceStartTime && isPaused) {
+                const pausedDuration = new Date() - pauseStartTime;
+                raceStartTime = new Date(raceStartTime.getTime() + pausedDuration);
+                startRaceTimer();
+                isPaused = false;
+            }
             document.getElementById('emergency-modal').style.display = 'none';
         }
+
 
         // --- Race Timer ---
         function startRaceTimer() {
             const timeLogEl = document.getElementById('log-time');
             raceTimerInterval = setInterval(() => {
-                const now = new Date();
-                const diff = now - raceStartTime;
-                const minutes = Math.floor(diff / 60000);
-                const seconds = Math.floor((diff % 60000) / 1000);
-                timeLogEl.textContent = `${minutes}m ${seconds}s`;
+                if (!isPaused) {
+                    const now = new Date();
+                    const diff = now - raceStartTime;
+                    const hours = Math.floor(diff / 3600000);
+                    const minutes = Math.floor((diff % 3600000) / 60000);
+                    const seconds = Math.floor((diff % 60000) / 1000);
+                    timeLogEl.textContent = `${hours}h ${minutes}m ${seconds}s`;
+                }
             }, 1000);
+        }
+        
+        // --- Confetti ---
+        const confettiCanvas = document.getElementById('confetti-canvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        let confettiParticles = [];
+        const confettiCount = 200;
+        const colors = ['#e73c7e', '#23a6d5', '#23d5ab', '#ee7752', '#feca57'];
+
+        function launchConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            confettiParticles = [];
+            for (let i = 0; i < confettiCount; i++) {
+                confettiParticles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: -20,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    tilt: Math.random() * 10 - 5,
+                    tiltAngle: 0
+                });
+            }
+            animateConfetti();
+        }
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles.forEach((p, i) => {
+                p.y += p.speed;
+                p.tiltAngle += 0.1;
+                p.x += Math.sin(p.tiltAngle) * 2;
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.save();
+                confettiCtx.translate(p.x + p.w / 2, p.y + p.h / 2);
+                confettiCtx.rotate(p.tiltAngle);
+                confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                confettiCtx.restore();
+
+                if (p.y > confettiCanvas.height) {
+                    confettiParticles.splice(i, 1);
+                }
+            });
+            if (confettiParticles.length > 0) {
+                requestAnimationFrame(animateConfetti);
+            }
         }
 
         // Initialize first page
