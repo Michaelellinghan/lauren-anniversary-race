@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Race Across London! 🚆</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Lobster&display=swap" rel="stylesheet">
@@ -67,8 +66,11 @@
             background-color: rgba(0, 0, 0, 0.7);
             z-index: 100;
             display: none;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            color: white;
+            font-size: 1.5rem;
         }
 
         #train {
@@ -120,11 +122,19 @@
         /* Map Styling */
         .map-container {
             @apply bg-white/80 backdrop-blur-sm p-4 rounded-3xl shadow-2xl my-6 relative;
+            transition: transform 0.5s ease-in-out;
+        }
+        .map-container.zoomed {
+            transform: scale(1.03);
         }
         .map-path {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
             animation: draw-line 2s ease-in-out forwards 0.5s;
+        }
+        .map-path.completed {
+            stroke: #27ae60; /* Green for completed */
+            stroke-dasharray: none;
         }
         @keyframes draw-line {
             to {
@@ -138,7 +148,7 @@
             100% { r: 2; opacity: 1; }
         }
         .pulse {
-            animation: pulse 1s ease-in-out 3; /* Pulse 3 times */
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
         #confetti-canvas {
@@ -153,12 +163,26 @@
         
         .fact-box {
             @apply bg-yellow-200/80 backdrop-blur-sm p-4 rounded-2xl text-gray-800 italic mt-4 text-sm flex items-center gap-4;
+            opacity: 0;
+            animation: slide-in-fade 0.6s forwards;
         }
 
         .fox-mascot {
             width: 50px;
             height: auto;
             flex-shrink: 0;
+        }
+
+        @keyframes slide-in-fade {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .souvenir-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+            margin: 0 5px;
         }
 
     </style>
@@ -170,57 +194,60 @@
     <!-- Fox Mascot SVG Definition -->
     <svg width="0" height="0" style="position:absolute">
       <defs>
-        <g id="felix-the-fox">
-            <!-- Body -->
+        <!-- Base Fox -->
+        <g id="felix-the-fox-base">
             <path d="M 50 95 C 20 95, 20 60, 50 60 C 80 60, 80 95, 50 95 Z" fill="#E67E22"/>
-            <!-- Head -->
             <path d="M 50 10 C 20 10, 20 65, 50 65 C 80 65, 80 10, 50 10 Z" fill="#E67E22"/>
-            <!-- Ears -->
-            <path d="M 25 20 L 15 5 L 35 15 Z" fill="#E67E22"/>
-            <path d="M 75 20 L 85 5 L 65 15 Z" fill="#E67E22"/>
-            <path d="M 27 18 L 20 8 L 34 15 Z" fill="#2C3E50"/>
-            <path d="M 73 18 L 80 8 L 66 15 Z" fill="#2C3E50"/>
-            <!-- Face -->
+            <path d="M 25 20 L 15 5 L 35 15 Z" fill="#E67E22"/><path d="M 75 20 L 85 5 L 65 15 Z" fill="#E67E22"/>
+            <path d="M 27 18 L 20 8 L 34 15 Z" fill="#2C3E50"/><path d="M 73 18 L 80 8 L 66 15 Z" fill="#2C3E50"/>
             <path d="M 50 45 C 40 55, 60 55, 50 45 L 35 60 Q 50 70 65 60 Z" fill="#ECF0F1"/>
-            <circle cx="40" cy="40" r="3" fill="#2C3E50"/>
-            <circle cx="60" cy="40" r="3" fill="#2C3E50"/>
+            <circle cx="40" cy="40" r="3" fill="#2C3E50"/><circle cx="60" cy="40" r="3" fill="#2C3E50"/>
             <circle cx="50" cy="50" r="2" fill="#2C3E50"/>
-            <!-- Bowler Hat -->
+        </g>
+        <!-- Normal Felix -->
+        <g id="felix-the-fox">
+            <use href="#felix-the-fox-base"/>
             <path d="M 50 5 C 30 5, 30 20, 50 20 C 70 20, 70 5, 50 5 Z" fill="#2C3E50"/>
             <rect x="25" y="18" width="50" height="4" rx="2" fill="#2C3E50"/>
         </g>
+        <!-- Felix with Sunglasses -->
+        <g id="felix-sunny">
+             <use href="#felix-the-fox-base"/>
+             <path d="M 35 38 h 30 v 10 h -30 z" fill="#2C3E50" rx="3"/>
+             <path d="M 48 38 v 5" stroke="white" stroke-width="1"/>
+        </g>
+        <!-- Felix with Umbrella -->
+        <g id="felix-rainy">
+            <use href="#felix-the-fox-base"/>
+            <path d="M 0 20 Q 50 -20, 100 20" fill="#3498db"/>
+            <path d="M 50 0 v 30" stroke="#2c3e50" stroke-width="3"/>
+        </g>
+        <!-- Felix Celebrating -->
         <g id="felix-celebrating">
             <use href="#felix-the-fox"/>
-            <!-- Arms up -->
             <path d="M 20 75 C 10 65, 10 55, 20 55" stroke="#E67E22" stroke-width="8" fill="none" stroke-linecap="round"/>
             <path d="M 80 75 C 90 65, 90 55, 80 55" stroke="#E67E22" stroke-width="8" fill="none" stroke-linecap="round"/>
         </g>
+        <!-- Souvenir Icons -->
+        <g id="souvenir-phonebox" viewBox="0 0 24 24"><path fill="#d32f2f" d="M18,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V4C20,2.9,19.1,2,18,2z M17,18h-2v-2h2V18z M17,14h-2v-2h2V14z M17,10h-2V8h2V10z M13,18H7V6h6V18z"/></g>
+        <g id="souvenir-masks" viewBox="0 0 24 24"><path fill="#fdd835" d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M9,16c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S10.66,16,9,16z M15,16c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S16.66,16,15,16z"/><path fill="#424242" d="M12,18c-2.48,0-4.65-1.28-6-3.25c0.04-3.97,4.01-6.2,6-6.2s5.96,2.23,6,6.2C16.65,16.72,14.48,18,12,18z"/></g>
+        <g id="souvenir-crown" viewBox="0 0 24 24"><path fill="#ffc107" d="M5,16L3,5l5.5,5L12,4l3.5,6L21,5l-2,11H5z M19,18H5v2h14V18z"/></g>
+        <g id="souvenir-beer" viewBox="0 0 24 24"><path fill="#ff9800" d="M20,8h-3V4h-2v4h- центральный-2V4h-2v4H6c-1.1,0-2,0.9-2,2v8c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2v-8C22,8.9,21.1,8,20,8z"/></g>
       </defs>
     </svg>
 
     <!-- Train Transition Overlay -->
     <div id="train-transition">
+        <p class="font-lobster text-white text-2xl mb-4">Minding the gap...</p>
         <svg id="train" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-            <!-- Jubilee Line Colours -->
-            <rect x="10" y="20" width="180" height="60" rx="10" fill="#A0A5A9"/> <!-- Silver -->
-            <rect x="10" y="15" width="180" height="10" rx="5" fill="#6A7073"/> <!-- Dark Grey -->
-            <rect y="58" width="200" height="10" fill="#6A7073"/> <!-- Dark Grey Stripe -->
-            <!-- Windows -->
-            <rect x="25" y="30" width="40" height="25" fill="#2c3e50"/>
-            <rect x="80" y="30" width="40" height="25" fill="#2c3e50"/>
-            <rect x="135" y="30" width="40" height="25" fill="#2c3e50"/>
-             <!-- Front light -->
-            <circle cx="185" cy="45" r="5" fill="yellow" />
-            <!-- Wheels -->
-            <circle cx="45" cy="85" r="10" fill="#2c3e50"/>
-            <circle cx="155" cy="85" r="10" fill="#2c3e50"/>
+            <use href="#train-body"/>
         </svg>
     </div>
 
     <!-- Emergency Stop Modal -->
     <div id="emergency-modal" onclick="hideEmergencyModal()">
         <div class="bg-white p-8 rounded-2xl text-center shadow-lg max-w-sm flex flex-col items-center">
-             <svg class="fox-mascot mb-4"><use href="#felix-the-fox"></use></svg>
+             <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
             <h3 class="font-lobster text-3xl text-red-600 mb-4">Emergency Stop!</h3>
             <p id="emergency-message" class="text-lg text-gray-700"></p>
             <button onclick="hideEmergencyModal(event)" class="btn mt-6">Resume Race</button>
@@ -267,8 +294,8 @@
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
                 <div class="fact-box">
-                     <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> Stanmore is the northern terminus of the Jubilee Line!</p>
+                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-1"></svg>
+                    <p><strong>Did you know?</strong> Stanmore was home to RAF Bentley Priory, the HQ of Fighter Command during the Battle of Britain.</p>
                 </div>
                 <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
                 <hr class="my-6 border-pink-300">
@@ -286,8 +313,8 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <div class="fact-box">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> The poet Robert Browning coined the name 'Little Venice' for this area in the 19th century.</p>
+                    <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-2"></svg>
+                    <p><strong>Did you know?</strong> The area is home to the Puppet Theatre Barge, a unique 55-seat floating puppet theatre.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
@@ -300,7 +327,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 1</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <div class="flex items-center justify-center gap-4">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
                     <p>Find a garden-lined street with a name that links to a city in the South West of England. Head along this street until you reach a mini roundabout.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -351,8 +378,8 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Well done! Now, let's head to the heart of Theatreland.</p>
                  <div class="fact-box">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> Leicester Square was named after Robert Sidney, the 2nd Earl of Leicester, who built a large house there in the 1630s.</p>
+                    <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-4"></svg>
+                    <p><strong>Did you know?</strong> The first ever public film screening in the UK took place at the Regent Street Polytechnic, just a short walk from Leicester Square, in 1896.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
@@ -365,7 +392,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 2</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <div class="flex items-center justify-center gap-4">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
                     <p>Find a famous restaurant located on West Street with ties to one of our children.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -418,8 +445,8 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time for a touch of grandeur.</p>
                 <div class="fact-box">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> Green Park is the quietest of the central Royal Parks, with no lakes or buildings and very few formal flowerbeds.</p>
+                    <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-6"></svg>
+                    <p><strong>Did you know?</strong> It's said no flowers grow in Green Park because Queen Catherine ordered them removed after catching King Charles II picking them there for another woman!</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Green Park.</p>
@@ -432,7 +459,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 3</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <div class="flex items-center justify-center gap-4">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
                     <p>Find the magnificent private mansion that has been used as a filming location for The Crawley’s London home in Downton Abbey located at 14 Cleveland Road. It overlooks Green Park and is a short walk from here.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -484,8 +511,8 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time to cross the river.</p>
                  <div class="fact-box">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> The current London Bridge is only from 1973. Several older bridges have existed at this spot for nearly 2,000 years!</p>
+                    <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-8"></svg>
+                    <p><strong>Did you know?</strong> The nursery rhyme "London Bridge Is Falling Down" may refer to one of the many earlier versions of the bridge that have stood here since Roman times.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
@@ -498,7 +525,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 4</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <div class="flex items-center justify-center gap-4">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
+                    <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
                     <p>Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
@@ -550,8 +577,8 @@
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Perfect. One more destination before we go find our hotel at 72 Prebend Street.</p>
                  <div class="fact-box">
-                    <svg class="fox-mascot"><use href="#felix-the-fox"></use></svg>
-                    <p><strong>Did you know?</strong> Islington has more theatres than any other part of London, including the famous Almeida and Sadler's Wells.</p>
+                    <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-10"></svg>
+                    <p><strong>Did you know?</strong> George Orwell lived in Islington while writing parts of *Nineteen Eighty-Four*.</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Islington.</p>
@@ -576,7 +603,7 @@
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
                 <div class="flex justify-center my-4">
-                    <svg class="w-24 h-24"><use href="#felix-celebrating"></use></svg>
+                    <svg class="w-24 h-24" viewBox="0 0 100 100"><use href="#felix-celebrating"></use></svg>
                 </div>
                 <div class="text-xl">
                     <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
@@ -661,32 +688,7 @@
         let questionStartTime;
         const checkpointTimes = {};
         let collectedSouvenirs = [];
-
-        // --- Sound Effects ---
-        let soundsReady = false;
-        const synth = new Tone.Synth().toDestination();
-        const noiseSynth = new Tone.NoiseSynth({
-            noise: { type: 'white' },
-            envelope: { attack: 0.005, decay: 0.1, sustain: 0 }
-        }).toDestination();
-        
-        document.body.addEventListener('click', async () => {
-            if (!soundsReady) {
-                await Tone.start();
-                soundsReady = true;
-            }
-        }, { once: true });
-
-        function playSound(type) {
-            if (!soundsReady) return;
-            if (type === 'correct') {
-                synth.triggerAttackRelease("C5", "8n");
-            } else if (type === 'wrong') {
-                synth.triggerAttackRelease("C3", "8n");
-            } else if (type === 'transition') {
-                noiseSynth.triggerAttackRelease("0.5");
-            }
-        }
+        let completedPaths = [];
 
         // --- Countdown Timer ---
         const countdownDate = new Date("2025-07-26T14:30:00").getTime();
@@ -741,8 +743,18 @@
 
         function drawMap(svgId, fromLoc, toLoc) {
             const svg = document.getElementById(svgId);
-            svg.innerHTML = londonMapSvg; // Add background map
+            svg.innerHTML = londonMapSvg; 
             
+            // Draw completed paths
+            completedPaths.forEach(path => {
+                const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                p.setAttribute("d", `M ${path.from.x} ${path.from.y} L ${path.to.x} ${path.to.y}`);
+                p.setAttribute("stroke", "#27ae60");
+                p.setAttribute("stroke-width", "1.2");
+                p.setAttribute("fill", "none");
+                svg.appendChild(p);
+            });
+
             // Draw all locations
             for (const key in locations) {
                 const loc = locations[key];
@@ -752,6 +764,9 @@
                 circle.setAttribute("cy", loc.y);
                 circle.setAttribute("r", "2");
                 circle.setAttribute("fill", "#6A7073");
+                if (loc === fromLoc) {
+                    circle.classList.add('pulse');
+                }
                 svg.appendChild(circle);
 
                 const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -775,11 +790,10 @@
                 path.classList.add("map-path");
                 svg.appendChild(path);
 
-                // Animate destination marker
                 setTimeout(() => {
                     const toLocKey = Object.keys(locations).find(key => locations[key] === toLoc);
                     document.getElementById(`loc-${toLocKey}-${svgId}`).classList.add('pulse');
-                }, 2500); // Start after path animation
+                }, 2500); 
             }
         }
 
@@ -790,7 +804,6 @@
                 startRaceTimer();
             }
 
-            playSound('transition');
             const trainTransition = document.getElementById('train-transition');
             trainTransition.style.display = 'flex';
             
@@ -804,28 +817,30 @@
                 pages[currentPage].classList.add('active');
                 window.scrollTo(0, 0);
                 trainTransition.style.display = 'none';
-
-                // Handle map drawing
-                if (pageIndex === 1) drawMap('map-1', locations.hemel, locations.stanmore);
-                if (pageIndex === 2) drawMap('map-2', locations.stanmore, locations.warwick);
-                if (pageIndex === 4) drawMap('map-4', locations.warwick, locations.leicester);
-                if (pageIndex === 6) drawMap('map-6', locations.leicester, locations.greenpark);
-                if (pageIndex === 8) drawMap('map-8', locations.greenpark, locations.londonbridge);
-                if (pageIndex === 10) drawMap('map-10', locations.londonbridge, locations.islington);
                 
-                // Start question timer
+                const mapContainer = pages[currentPage].querySelector('.map-container');
+                if(mapContainer) {
+                    mapContainer.classList.add('zoomed');
+                    setTimeout(() => mapContainer.classList.remove('zoomed'), 500);
+                }
+
+                if (pageIndex === 1) drawMap('map-1', locations.hemel, locations.stanmore);
+                if (pageIndex === 2) { completedPaths.push({from: locations.hemel, to: locations.stanmore}); drawMap('map-2', locations.stanmore, locations.warwick); }
+                if (pageIndex === 4) { completedPaths.push({from: locations.stanmore, to: locations.warwick}); drawMap('map-4', locations.warwick, locations.leicester); }
+                if (pageIndex === 6) { completedPaths.push({from: locations.warwick, to: locations.leicester}); drawMap('map-6', locations.leicester, locations.greenpark); }
+                if (pageIndex === 8) { completedPaths.push({from: locations.leicester, to: locations.greenpark}); drawMap('map-8', locations.greenpark, locations.londonbridge); }
+                if (pageIndex === 10) { completedPaths.push({from: locations.greenpark, to: locations.londonbridge}); drawMap('map-10', locations.londonbridge, locations.islington); }
+                
                 if ([3, 5, 7, 9].includes(pageIndex)) {
                     questionStartTime = new Date();
                 }
                 
-                // Handle Race Log
                 if (pageIndex === 12) {
                     clearInterval(raceTimerInterval);
                     document.getElementById('log-checkpoints').textContent = checkpointsCompleted;
                     document.getElementById('log-selfies').textContent = selfiesTaken;
-                    document.getElementById('log-souvenirs').textContent = collectedSouvenirs.join(' ');
+                    document.getElementById('log-souvenirs').innerHTML = collectedSouvenirs.map(s => `<svg class="souvenir-icon" viewBox="0 0 24 24"><use href="#${s}"></use></svg>`).join('');
                     
-                    // Calculate fastest checkpoint
                     let fastestTime = Infinity;
                     let fastestCp = null;
                     for (const cp in checkpointTimes) {
@@ -849,7 +864,7 @@
 
         // --- Quiz Logic ---
         const souvenirs = {
-            1: '☎️', 2: '🎭', 3: '👑', 4: '🍺'
+            1: 'souvenir-phonebox', 2: 'souvenir-masks', 3: 'souvenir-crown', 4: 'souvenir-beer'
         };
 
         const answers = {
@@ -881,13 +896,11 @@
             if (answers[checkpoint].accepted.includes(providedAnswer)) {
                 const timeTaken = new Date() - questionStartTime;
                 checkpointTimes[checkpoint] = timeTaken;
-                playSound('correct');
                 feedbackEl.textContent = 'Well done! That\'s correct!';
                 feedbackEl.classList.remove('text-red-500');
                 feedbackEl.classList.add('text-green-500');
                 revealInfo(checkpoint, true);
             } else {
-                playSound('wrong');
                 wrongAttempts[checkpoint]++;
                 feedbackEl.classList.add('text-red-500');
                 feedbackEl.classList.remove('text-green-500');
@@ -1038,9 +1051,36 @@
             }
         }
 
+        // --- Weather ---
+        async function getLondonWeather() {
+            try {
+                const response = await fetch('https://wttr.in/London?format=j1');
+                const data = await response.json();
+                const weatherDesc = data.current_condition[0].weatherDesc[0].value.toLowerCase();
+                
+                let weatherFoxId = 'felix-the-fox';
+                if (weatherDesc.includes('rain') || weatherDesc.includes('shower') || weatherDesc.includes('drizzle')) {
+                    weatherFoxId = 'felix-rainy';
+                } else if (weatherDesc.includes('sunny') || weatherDesc.includes('clear')) {
+                    weatherFoxId = 'felix-sunny';
+                }
+                
+                document.querySelectorAll('[id^="weather-fox-"]').forEach(el => {
+                    el.innerHTML = `<use href="#${weatherFoxId}"></use>`;
+                });
+
+            } catch (error) {
+                console.error("Couldn't fetch weather data.", error);
+                 document.querySelectorAll('[id^="weather-fox-"]').forEach(el => {
+                    el.innerHTML = `<use href="#felix-the-fox"></use>`;
+                });
+            }
+        }
+
         // Initialize first page
         document.addEventListener('DOMContentLoaded', () => {
              pages[0].classList.add('active');
+             getLondonWeather();
         });
     </script>
 
