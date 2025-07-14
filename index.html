@@ -12,16 +12,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
+            background-color: #74b9ff; /* Static background color */
             overflow-x: hidden;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
         }
 
         .font-lobster {
@@ -139,6 +131,16 @@
                 stroke-dashoffset: 0;
             }
         }
+
+        @keyframes pulse {
+            0% { r: 2; opacity: 1; }
+            50% { r: 4; opacity: 0.5; }
+            100% { r: 2; opacity: 1; }
+        }
+        .pulse {
+            animation: pulse 1s ease-in-out 3; /* Pulse 3 times */
+        }
+
         #confetti-canvas {
             position: fixed;
             top: 0;
@@ -255,12 +257,14 @@
                 <div class="mt-4 text-center">
                     <input id="answer-1" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-1" class="mt-2 h-6 font-bold"></p>
-                    <div id="q1-buttons" class="mt-4 space-x-4">
+                    <div id="q1-buttons" class="mt-4 space-x-4 inline-flex">
                         <button onclick="checkAnswer(1)" class="btn">Submit</button>
                         <button onclick="giveUp(1)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
-                     <button onclick="showHint(1)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
-                    <p id="hint-1" class="mt-2 text-blue-200 italic" style="display: none;"></p>
+                    <div id="hint-container-1" class="mt-4">
+                        <button onclick="showHint(1)" class="btn btn-small bg-blue-500">Need a hint?</button>
+                        <p id="hint-1" class="mt-2 text-black italic" style="display: none;"></p>
+                    </div>
                 </div>
             </div>
             
@@ -311,12 +315,14 @@
                 <div class="mt-4 text-center">
                     <input id="answer-2" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-2" class="mt-2 h-6 font-bold"></p>
-                    <div id="q2-buttons" class="mt-4 space-x-4">
+                    <div id="q2-buttons" class="mt-4 space-x-4 inline-flex">
                         <button onclick="checkAnswer(2)" class="btn">Submit</button>
                         <button onclick="giveUp(2)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
-                    <button onclick="showHint(2)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
-                    <p id="hint-2" class="mt-2 text-blue-200 italic" style="display: none;"></p>
+                    <div id="hint-container-2" class="mt-4">
+                        <button onclick="showHint(2)" class="btn btn-small bg-blue-500">Need a hint?</button>
+                        <p id="hint-2" class="mt-2 text-black italic" style="display: none;"></p>
+                    </div>
                 </div>
             </div>
             
@@ -369,12 +375,14 @@
                 <div class="mt-4 text-center">
                     <input id="answer-3" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-3" class="mt-2 h-6 font-bold"></p>
-                    <div id="q3-buttons" class="mt-4 space-x-4">
+                    <div id="q3-buttons" class="mt-4 space-x-4 inline-flex">
                         <button onclick="checkAnswer(3)" class="btn">Submit</button>
                         <button onclick="giveUp(3)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
-                     <button onclick="showHint(3)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
-                    <p id="hint-3" class="mt-2 text-blue-200 italic" style="display: none;"></p>
+                    <div id="hint-container-3" class="mt-4">
+                        <button onclick="showHint(3)" class="btn btn-small bg-blue-500">Need a hint?</button>
+                        <p id="hint-3" class="mt-2 text-black italic" style="display: none;"></p>
+                    </div>
                 </div>
             </div>
             
@@ -426,12 +434,14 @@
                 <div class="mt-4 text-center">
                     <input id="answer-4" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
                     <p id="feedback-4" class="mt-2 h-6 font-bold"></p>
-                    <div id="q4-buttons" class="mt-4 space-x-4">
+                    <div id="q4-buttons" class="mt-4 space-x-4 inline-flex">
                         <button onclick="checkAnswer(4)" class="btn">Submit</button>
                         <button onclick="giveUp(4)" class="btn bg-gray-500">Give Up 😔</button>
                     </div>
-                     <button onclick="showHint(4)" class="btn btn-small bg-blue-500 mt-4">Need a hint?</button>
-                    <p id="hint-4" class="mt-2 text-blue-200 italic" style="display: none;"></p>
+                    <div id="hint-container-4" class="mt-4">
+                        <button onclick="showHint(4)" class="btn btn-small bg-blue-500">Need a hint?</button>
+                        <p id="hint-4" class="mt-2 text-black italic" style="display: none;"></p>
+                    </div>
                 </div>
             </div>
             
@@ -524,6 +534,9 @@
                 <div class="text-xl">
                     <p><strong>Total Race Time:</strong> <span id="log-time"></span></p>
                 </div>
+                 <div class="text-xl font-bold text-yellow-500">
+                    <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest"></span></p>
+                </div>
                 <hr class="my-4 border-pink-300">
                 <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
             </div>
@@ -544,6 +557,9 @@
         let raceTimerInterval;
         let isPaused = false;
         let pauseStartTime;
+        let questionStartTime;
+        const checkpointTimes = {};
+
 
         // --- Sound Effects ---
         let soundsReady = false;
@@ -630,6 +646,7 @@
             for (const key in locations) {
                 const loc = locations[key];
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("id", `loc-${key}`);
                 circle.setAttribute("cx", loc.x);
                 circle.setAttribute("cy", loc.y);
                 circle.setAttribute("r", "2");
@@ -656,6 +673,12 @@
                 path.setAttribute("stroke-dasharray", "2 2");
                 path.classList.add("map-path");
                 svg.appendChild(path);
+
+                // Animate destination marker
+                setTimeout(() => {
+                    const toLocKey = Object.keys(locations).find(key => locations[key] === toLoc);
+                    document.getElementById(`loc-${toLocKey}`).classList.add('pulse');
+                }, 2500); // Start after path animation
             }
         }
 
@@ -689,11 +712,33 @@
                 if (pageIndex === 8) drawMap('map-8', locations.greenpark, locations.londonbridge);
                 if (pageIndex === 10) drawMap('map-10', locations.londonbridge, locations.islington);
                 
-                // Handle Race Log & Confetti
+                // Start question timer
+                if ([3, 5, 7, 9].includes(pageIndex)) {
+                    questionStartTime = new Date();
+                }
+                
+                // Handle Race Log
                 if (pageIndex === 12) {
                     clearInterval(raceTimerInterval);
                     document.getElementById('log-checkpoints').textContent = checkpointsCompleted;
                     document.getElementById('log-selfies').textContent = selfiesTaken;
+                    
+                    // Calculate fastest checkpoint
+                    let fastestTime = Infinity;
+                    let fastestCp = null;
+                    for (const cp in checkpointTimes) {
+                        if (checkpointTimes[cp] < fastestTime) {
+                            fastestTime = checkpointTimes[cp];
+                            fastestCp = cp;
+                        }
+                    }
+                    const fastestLogEl = document.getElementById('log-fastest');
+                    if (fastestCp) {
+                        fastestLogEl.textContent = `Checkpoint ${fastestCp} (${(fastestTime / 1000).toFixed(1)}s)`;
+                    } else {
+                        fastestLogEl.textContent = 'N/A';
+                    }
+
                     launchConfetti();
                 }
 
@@ -728,6 +773,8 @@
             const providedAnswer = inputEl.value.trim().toLowerCase();
             
             if (answers[checkpoint].accepted.includes(providedAnswer)) {
+                const timeTaken = new Date() - questionStartTime;
+                checkpointTimes[checkpoint] = timeTaken;
                 playSound('correct');
                 feedbackEl.textContent = 'Well done! That\'s correct!';
                 feedbackEl.classList.remove('text-red-500');
@@ -758,9 +805,8 @@
 
         function revealInfo(checkpoint, isCorrect) {
             document.getElementById(`info-${checkpoint}`).classList.remove('hidden');
-            checkpointsCompleted++;
-            
             if (isCorrect) {
+                checkpointsCompleted++;
                 selfiesTaken++;
                 const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
                 selfieEl.innerHTML = `📸 ${selfiePrompts[checkpoint]}`;
@@ -769,6 +815,7 @@
             
             document.getElementById(`answer-${checkpoint}`).disabled = true;
             document.getElementById(`q${checkpoint}-buttons`).style.display = 'none';
+            document.getElementById(`hint-container-${checkpoint}`).style.display = 'none';
         }
 
         function showHint(checkpoint) {
