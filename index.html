@@ -3,890 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Race Across London: The Ultimate Challenge</title>
-    <!-- Tailwind CSS CDN for styling -->
+    <title>Race Across London! 🚆</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Lobster&display=swap" rel="stylesheet">
     <style>
-        /* Inter font from Google Fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1rem; /* Responsive padding */
-            box-sizing: border-box; /* Include padding in element's total width and height */
-        }
-        #game-container {
-            background-color: #ffffff;
-            border-radius: 1rem; /* Rounded corners */
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Stronger shadow */
-            padding: 2.5rem 2rem; /* More generous padding */
-            width: 100%;
-            max-width: 38rem; /* Max width for readability on larger screens */
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
         }
 
-        /* Custom styles for subtle animations */
-        .stage-content {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.7s ease-out forwards;
-        }
-        @keyframes fadeInSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .fancy-button {
-            background-image: linear-gradient(to right, #6EE7B7 0%, #34D399 51%, #10B981 100%);
-            background-size: 200% auto;
-            color: white;
-            transition: 0.5s;
-            box-shadow: 0 4px 15px 0 rgba(49, 196, 128, 0.75);
-        }
-        .fancy-button:hover {
-            background-position: right center; /* change the direction of the change here */
-            box-shadow: 0 4px 20px 0 rgba(49, 196, 128, 0.9);
-        }
-        .fancy-button:disabled {
-            background-image: none;
-            background-color: #cbd5e1; /* Gray-300 */
-            color: #64748b; /* Gray-600 */
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-        .input-field {
-            border: 2px solid #d1d5db; /* Light gray border */
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            width: 100%;
-            max-width: 20rem; /* Limit input width */
-            font-size: 1rem;
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .submit-button, .give-up-button, .submit-bonus-button, .skip-bonus-button {
-            background-color: #3b82f6; /* Blue-500 */
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
-        }
-        .submit-button:hover, .submit-bonus-button:hover {
-            background-color: #2563eb; /* Blue-600 */
-        }
-        .give-up-button {
-            background-color: #ef4444; /* Red-500 */
-            margin-left: 0.5rem; /* Space between buttons */
-        }
-        .give-up-button:hover {
-            background-color: #dc2626; /* Red-600 */
-        }
-        .skip-bonus-button {
-            background-color: #6b7280; /* Gray-500 */
-            margin-left: 0.5rem;
-        }
-        .skip-bonus-button:hover {
-            background-color: #4b5563; /* Gray-600 */
-        }
-        .feedback-message {
-            font-weight: 600;
-            margin-top: 0.75rem;
-        }
-        .feedback-correct {
-            color: #10b981; /* Green-500 */
-        }
-        .feedback-incorrect {
-            color: #ef4444; /* Red-500 */
-        }
-        .job-experience-section {
-            background-color: #ecfdf5; /* Light green for job experience */
-            border-left: 4px solid #10b981;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-            text-align: left;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.7s ease-out forwards;
-        }
-        .job-experience-section h3 {
-            font-weight: bold;
-            color: #065f46; /* Darker green */
-            margin-bottom: 0.5rem;
-            font-size: 1.125rem;
-        }
-        .selfie-section {
-            background-color: #fffbeb; /* Light yellow for selfie requirement */
-            border-left: 4px solid #f59e0b;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.7s ease-out forwards;
-        }
-        .selfie-section p {
-            color: #b45309; /* Darker yellow/orange */
-        }
-        .bonus-questions-section {
-            background-color: #e0f2fe; /* Light blue for bonus questions */
-            border-left: 4px solid #3b82f6;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 1.5rem;
-            text-align: left;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.7s ease-out forwards;
-        }
-        .bonus-questions-section h3 {
-            font-weight: bold;
-            color: #1e40af; /* Darker blue */
-            margin-bottom: 0.5rem;
-            font-size: 1.125rem;
-        }
-        .bonus-question {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-        .bonus-option {
-            margin-bottom: 0.25rem;
-        }
-        .bonus-option input[type="radio"] {
-            margin-right: 0.5rem;
-        }
-        .date-gate-message {
-            background-color: #fee2e2; /* Light red for warning */
-            border: 2px solid #ef4444;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
-            font-weight: bold;
-            color: #dc2626;
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
+        .font-lobster {
+            font-family: 'Lobster', cursive;
+        }
 
-        /* Animation for The Great Gatsby reveal */
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 1;
+        .page {
+            display: none;
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            @apply inline-block px-8 py-4 text-lg font-bold text-white rounded-full shadow-lg transition-transform duration-300 ease-in-out;
+            background-color: #e73c7e;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            @apply bg-gray-400 cursor-not-allowed;
             transform: scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.02);
-          }
-        }
-        .animate-pulse-reveal {
-            animation: pulse 1.5s infinite;
         }
 
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
-            #game-container {
-                padding: 3rem 2.5rem;
-            }
-            .text-3xl { font-size: 2.25rem; }
-            .text-4xl { font-size: 3rem; }
-            .text-5xl { font-size: 3.75rem; }
-            .text-6xl { font-size: 4.5rem; }
-            .text-7xl { font-size: 5rem; }
-            .text-lg { font-size: 1.125rem; }
-            .text-xl { font-size: 1.25rem; }
-            .button-group {
-                flex-direction: row;
-            }
+        .info-box {
+            @apply bg-white/20 backdrop-blur-sm p-6 rounded-2xl shadow-lg mt-6;
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100 text-gray-800">
+<body class="text-gray-800">
 
-    <div id="game-container" class="w-full max-w-md md:max-w-xl lg:max-w-2xl">
-
-        <!-- Countdown Timer -->
-        <div id="countdown" class="text-xl md:text-2xl font-bold text-red-600 mb-4 animate-pulse"></div>
-
-        <!-- Header -->
-        <h1 id="game-title" class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-blue-700 mb-4 animate-bounce">
-            🌍 Race Across London! ✈️
-        </h1>
-        <p class="text-base md:text-lg text-gray-600 mb-6">
-            A special anniversary adventure!
-        </p>
-
-        <!-- Stage Content Area -->
-        <div id="stage-content-area" class="w-full">
-            <!-- Content will be dynamically loaded here -->
+    <!-- Countdown Timer Header -->
+    <header class="sticky top-0 left-0 right-0 bg-black/50 backdrop-blur-sm p-2 text-white text-center shadow-lg z-50">
+        <div id="countdown" class="flex justify-center items-center space-x-2 md:space-x-4">
+            <!-- Countdown will be injected here by JS -->
         </div>
+    </header>
 
-        <!-- Date Gate Message -->
-        <div id="date-gate-message" class="date-gate-message" style="display: none;">
-            The race officially begins on 26th July 2025! Come back then to start your adventure.
-        </div>
+    <div class="container mx-auto p-4 md:p-8 max-w-2xl">
 
-        <!-- Answer Input and Feedback Area for Main Question -->
-        <div id="answer-section" class="w-full mt-6 flex flex-col items-center" style="display: none;">
-            <p class="text-md md:text-lg text-gray-700 mb-3">
-                <strong>Your Challenge:</strong>
-            </p>
-            <p id="challenge-question" class="text-lg md:text-xl font-semibold text-blue-600 mb-4"></p>
-            <input type="text" id="answer-input" class="input-field" placeholder="Enter your exact answer...">
-            <div class="button-group mt-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full justify-center">
-                <button id="submit-answer-button" class="submit-button py-2 px-4 transform transition-transform duration-200 hover:scale-105">
-                    Submit Answer
-                </button>
-                <button id="give-up-button" class="give-up-button py-2 px-4 transform transition-transform duration-200 hover:scale-105">
-                    Give Up 😔
-                </button>
+        <!-- Page 0: Opening -->
+        <div id="page-0" class="page active text-center text-white">
+            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Across London! 🚆</h1>
+            <h2 class="text-2xl md:text-3xl font-bold mb-8">A special 7th anniversary adventure!</h2>
+            
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p class="text-lg">Welcome to your Race Across London! (Legally different from Race Across the World 😉)</p>
+                <p>Lauren, I hope you’re ready for a special anniversary adventure I have prepared for you!</p>
+                <p>This is your very own 'Race Across London' – an exciting journey with various checkpoints and questions!</p>
+                <hr class="my-6 border-pink-300">
+                <h3 class="font-bold text-xl text-pink-500">Pre-Race Challenge:</h3>
+                <p>Your first mission is to prepare a suitcase for 4 days and head to 78 Tattershall drive!</p>
+                <p>We’ll head to Hemel today, whenever my parents arrive and you are ready. We’ll be staying in London for one night tomorrow, and in Hemel until Sunday.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-center">The main race starts on <span class="text-pink-500">26th July 2025</span>! Come back then to begin your grand journey!</p>
             </div>
-            <p id="feedback-message" class="feedback-message"></p>
+
+            <button id="start-race-btn" onclick="navigateTo(1)" class="btn mt-8">Start Your London Race</button>
+            <p id="start-race-message" class="mt-2 text-white/80"></p>
         </div>
 
-        <!-- Selfie Section -->
-        <div id="selfie-section" class="selfie-section w-full" style="display: none;">
-            <p class="font-bold text-lg mb-2">📸 Selfie Time!</p>
-            <p>Don't forget to capture this moment! Take a selfie at your current location using your phone's camera, and send it straight to Michael! 😉</p>
-        </div>
-
-        <!-- Job Experience Section -->
-        <div id="job-experience-section" class="job-experience-section w-full" style="display: none;">
-            <h3 id="job-experience-title"></h3>
-            <p id="job-experience-description" class="text-gray-700"></p>
-        </div>
-
-        <!-- Bonus Questions Section -->
-        <div id="bonus-questions-section" class="bonus-questions-section w-full" style="display: none;">
-            <h3>💰 Earn More Money!</h3>
-            <p class="text-gray-700 mb-4">Every question answered correctly is an extra £1 shopping money tomorrow!</p>
-            <div id="bonus-questions-list">
-                <!-- Bonus questions will be dynamically loaded here -->
+        <!-- Page 1: Stanmore Start -->
+        <div id="page-1" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Your Grand Adventure Begins!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
+                <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your first mission: From 22 Kennedy Drive, NG9 8HT, travel to Stanmore Train Station, HA7 2DX. Travel however you like!</p>
             </div>
-            <div class="button-group mt-4 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 w-full justify-center">
-                <button id="submit-bonus-answers-button" class="submit-bonus-button py-2 px-4 transform transition-transform duration-200 hover:scale-105">
-                    Submit Bonus Answers
-                </button>
-                <button id="skip-bonus-questions-button" class="skip-bonus-button py-2 px-4 transform transition-transform duration-200 hover:scale-105">
-                    Skip Bonus Questions
-                </button>
+            <button onclick="navigateTo(2)" class="btn mt-8">Next Stage</button>
+        </div>
+
+        <!-- Page 2: Warwick Avenue Travel -->
+        <div id="page-2" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">To 'Little Venice'</h1>
+             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
             </div>
-            <p id="bonus-feedback-message" class="feedback-message" style="display: none;"></p>
+            <button onclick="navigateTo(3)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Navigation Buttons -->
-        <div class="mt-8 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full justify-center">
-            <button id="next-button" class="fancy-button py-3 px-6 rounded-lg text-lg font-semibold transform transition-transform duration-200 hover:scale-105 w-full md:w-auto" disabled>
-                Next Stage 🚀
-            </button>
-            <button id="restart-button" class="bg-gray-200 text-gray-700 py-3 px-6 rounded-lg text-lg font-semibold transform transition-transform duration-200 hover:scale-105 w-full md:w-auto" style="display: none;">
-                Start Again ↩️
-            </button>
+        <!-- Page 3: Checkpoint 1 -->
+        <div id="page-3" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 1</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Find a garden-lined street with a name that links to a city in the South West of England. Head along this street until you reach a mini roundabout.</p>
+                <hr class="my-6 border-pink-300">
+                <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
+                <p class="text-center">What is on the corner between Formosa Street and Bristol Gardens?</p>
+                
+                <div class="mt-4 text-center">
+                    <input id="answer-1" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
+                    <p id="feedback-1" class="mt-2 h-6 font-bold"></p>
+                    <div class="mt-4 space-x-4">
+                        <button onclick="checkAnswer(1)" class="btn">Submit Answer</button>
+                        <button onclick="giveUp(1)" class="btn bg-gray-500">Give Up 😔</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="info-1" class="hidden mt-6 text-left text-white">
+                 <div class="info-box">
+                    <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
+                    <h4 class="font-bold text-lg text-pink-100">Coffee & Lunch Stops:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Coffee Shop:</b> Cafe Laville is a unique café that sits directly over the canal, offering lovely views.</li>
+                        <li><b>Lunch Restaurant:</b> The Waterway is a fantastic gastropub with a large terrace right on the canal.</li>
+                    </ul>
+                    <h4 class="font-bold text-lg mt-4 text-pink-100">Other Places to Check Out:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Rembrandt Gardens:</b> A beautiful and tranquil canalside garden, perfect for a brief, quiet moment.</li>
+                        <li><b>Walk the Waterway:</b> How about a 5-10 minute stroll along the canal towpath towards Paddington?</li>
+                    </ul>
+                    <div id="selfie-prompt-1" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                </div>
+                <div class="text-center">
+                    <button onclick="navigateTo(4)" class="btn mt-8">Next Stage</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 4: Leicester Square Travel -->
+        <div id="page-4" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Heart of Theatreland</h1>
+             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Well done! Now, let's head to the heart of Theatreland.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
+            </div>
+            <button onclick="navigateTo(5)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Footer / Credits -->
-        <p class="text-xs text-gray-400 mt-8">
-            Created with love, just for you. ❤️
-        </p>
+        <!-- Page 5: Checkpoint 2 -->
+        <div id="page-5" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 2</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Find a famous restaurant located on West Street with ties to one of our children.</p>
+                <hr class="my-6 border-pink-300">
+                <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
+                <p class="text-center">What letter is repeated twice on the clock?</p>
+                
+                <div class="mt-4 text-center">
+                    <input id="answer-2" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
+                    <p id="feedback-2" class="mt-2 h-6 font-bold"></p>
+                    <div class="mt-4 space-x-4">
+                        <button onclick="checkAnswer(2)" class="btn">Submit Answer</button>
+                        <button onclick="giveUp(2)" class="btn bg-gray-500">Give Up 😔</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="info-2" class="hidden mt-6 text-left text-white">
+                 <div class="info-box">
+                    <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
+                    <h4 class="font-bold text-lg text-pink-100">Coffee & Lunch Stops (sorry, we’re not eating here):</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Coffee Shop:</b> Abuelo is a lovely, relaxed Australian-meets-South American café just around the corner.</li>
+                        <li><b>Lunch Restaurant:</b> Dishoom Covent Garden is an incredibly popular spot for delicious Bombay-inspired food.</li>
+                    </ul>
+                    <h4 class="font-bold text-lg mt-4 text-pink-100">Other Places to Check Out:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Neal's Yard:</b> A must-see hidden gem, exploding with colour.</li>
+                        <li><b>The London Transport Museum:</b> Given the theme of the race, this is very fitting!</li>
+                        <li><b>Covent Garden's Street Performers:</b> Soak up the lively atmosphere.</li>
+                        <li><b>Evening Plans:</b> We could come back for 9:05 to see Rachel Zegler on the balcony of the London Palladium!</li>
+                    </ul>
+                    <div id="selfie-prompt-2" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                </div>
+                <div class="text-center">
+                    <button onclick="navigateTo(6)" class="btn mt-8">Next Stage</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 6: Green Park Travel -->
+        <div id="page-6" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">A Touch of Grandeur</h1>
+             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Great job! Now it’s time for a touch of grandeur.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your task: Travel to Green Park.</p>
+            </div>
+            <button onclick="navigateTo(7)" class="btn mt-8">I’ve Arrived</button>
+        </div>
+
+        <!-- Page 7: Checkpoint 3 -->
+        <div id="page-7" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 3</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Find the magnificent private mansion that has been used as a filming location for The Crawley’s London home in Downton Abbey located at 14 Cleveland Road. It overlooks Green Park and is a short walk from here.</p>
+                <hr class="my-6 border-pink-300">
+                <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
+                <p class="text-center">What animal is seen above the arch in the doorway?</p>
+                
+                <div class="mt-4 text-center">
+                    <input id="answer-3" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
+                    <p id="feedback-3" class="mt-2 h-6 font-bold"></p>
+                    <div class="mt-4 space-x-4">
+                        <button onclick="checkAnswer(3)" class="btn">Submit Answer</button>
+                        <button onclick="giveUp(3)" class="btn bg-gray-500">Give Up 😔</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="info-3" class="hidden mt-6 text-left text-white">
+                 <div class="info-box">
+                    <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
+                    <h4 class="font-bold text-lg text-pink-100">Coffee & Lunch Stops:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Coffee Shop:</b> Colicci at the entrance to Green Park offers coffee and snacks with a view.</li>
+                        <li><b>Lunch Restaurant:</b> The Wolseley on Piccadilly is an elegant European grand café.</li>
+                    </ul>
+                    <h4 class="font-bold text-lg mt-4 text-pink-100">Other Places to Check Out:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>A "Fly-by" of Buckingham Palace:</b> We're right on the doorstep!</li>
+                        <li><b>Spencer House:</b> Another magnificent aristocratic town house, Princess Diana's ancestral home.</li>
+                        <li><b>Fortnum & Mason:</b> A quick walk through this famous luxury department store is an experience in itself.</li>
+                    </ul>
+                    <div id="selfie-prompt-3" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                </div>
+                <div class="text-center">
+                    <button onclick="navigateTo(8)" class="btn mt-8">Next Stage</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 8: London Bridge Travel -->
+        <div id="page-8" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Cross the River</h1>
+             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Great job! Now it’s time to cross the river.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
+            </div>
+            <button onclick="navigateTo(9)" class="btn mt-8">I’ve Arrived</button>
+        </div>
+
+        <!-- Page 9: Checkpoint 4 -->
+        <div id="page-9" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 4</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
+                <hr class="my-6 border-pink-300">
+                <h3 class="font-bold text-xl text-center text-pink-500">Question:</h3>
+                <p class="text-center">When was this inn established?</p>
+                
+                <div class="mt-4 text-center">
+                    <input id="answer-4" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300 focus:ring-pink-500 focus:border-pink-500 text-center" placeholder="Your answer here">
+                    <p id="feedback-4" class="mt-2 h-6 font-bold"></p>
+                    <div class="mt-4 space-x-4">
+                        <button onclick="checkAnswer(4)" class="btn">Submit Answer</button>
+                        <button onclick="giveUp(4)" class="btn bg-gray-500">Give Up 😔</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="info-4" class="hidden mt-6 text-left text-white">
+                 <div class="info-box">
+                    <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
+                    <h4 class="font-bold text-lg text-pink-100">Coffee & Lunch Stops:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Coffee Shop:</b> Monmouth Coffee Company in Borough Market is famous for its exceptional coffee.</li>
+                        <li><b>Lunch Restaurant:</b> You are spoilt for choice at Borough Market! Or pop in the George Inn!</li>
+                    </ul>
+                    <h4 class="font-bold text-lg mt-4 text-pink-100">Other Places to Check Out:</h4>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Southwark Cathedral:</b> This stunning Gothic cathedral is literally next door to Borough Market.</li>
+                        <li><b>The Golden Hinde:</b> A beautiful full-size reconstruction of Sir Francis Drake's 16th-century galleon.</li>
+                        <li><b>Shakespeare's Globe:</b> A little further along the river bank is the famous Globe theatre.</li>
+                    </ul>
+                    <div id="selfie-prompt-4" class="mt-4 p-4 bg-pink-100 text-pink-800 rounded-lg text-center font-bold"></div>
+                </div>
+                <div class="text-center">
+                    <button onclick="navigateTo(10)" class="btn mt-8">Next Stage</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 10: Islington Travel -->
+        <div id="page-10" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">The Final Leg!</h1>
+             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p>Perfect. Let's go find our hotel at 72 Prebend Street.</p>
+                <hr class="my-6 border-pink-300">
+                <p class="font-bold text-xl text-center">Your task: Travel to Islington.</p>
+            </div>
+            <button onclick="navigateTo(11)" class="btn mt-8">I’ve Arrived</button>
+        </div>
+
+        <!-- Page 11: Final Page -->
+        <div id="page-11" class="page text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6 text-center">The Adventure Continues Tomorrow...!!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <p class="text-xl text-center">...But for now, what would you like to do?</p>
+                 <div class="info-box text-gray-800">
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">For Coffee (Hyper-Local Gems)</h3>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Canal No.5:</b> A charming, independent café located directly on the Regent's Canal towpath.</li>
+                        <li><b>The Common:</b> A top-quality, minimalist coffee shop focused on expertly made coffee.</li>
+                        <li><b>The CoffeeWorks Project:</b> One of the best speciality coffee shops in the area on Camden Passage.</li>
+                        <li><b>Kobo Cafe:</b> A lovely, relaxed local favourite on Upper Street.</li>
+                    </ul>
+                </div>
+                 <div class="info-box text-gray-800">
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">For a Celebratory Lunch or Dinner</h3>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>The Duke of Cambridge:</b> Britain's first certified organic pub, practically next door.</li>
+                        <li><b>Frederick's:</b> Known for its beautiful conservatory dining room and modern European food.</li>
+                        <li><b>The Plaquemine Lock:</b> Serves authentic Louisiana Cajun and Creole food with a brilliant, buzzy atmosphere.</li>
+                        <li><b>Trullo:</b> A superb and highly-acclaimed Italian restaurant famous for its hand-made pasta.</li>
+                    </ul>
+                </div>
+                 <div class="info-box text-gray-800">
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">Closer, More Immediate Things To Do</h3>
+                    <ul class="list-disc list-inside space-y-2 mt-2">
+                        <li><b>Explore Camden Passage:</b> Famous for its antique shops, quirky boutiques, and market stalls.</li>
+                        <li><b>A Walk Along the Regent's Canal:</b> We can be on the towpath in under a minute!</li>
+                        <li><b>Explore St Peter's Street:</b> Has a wonderful, quiet "village" feel with its Georgian houses.</li>
+                        <li><b>Have a Drink at a True Local's Pub:</b> The Wenlock Arms is a famous, award-winning "proper" pub.</li>
+                    </ul>
+                </div>
+                <p class="font-bold text-xl text-center mt-8">Ready for tomorrow? Michael will reveal the plans then.</p>
+            </div>
+        </div>
+
 
     </div>
 
     <script>
-        // Game state variables
-        let currentStageIndex = 0;
-        let totalBonusMoney = 0; // Tracks total bonus money earned
+        // --- State Management ---
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        const wrongAttempts = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
-        // Define the stages of the journey with questions, answers, job experiences, and bonus questions
-        const stages = [
-            {
-                title: "Welcome to your Race Across London!",
-                instructions: `
-                    Get ready for a special anniversary adventure I have prepared for you!
-                    <br><br>
-                    This is your very own 'Race Across London' – an exciting journey with various checkpoints and challenges designed to earn you points (and shopping money!).
-                    <br><br>
-                    Before the race officially begins, here's your first mission:
-                    <br><br>
-                    <strong>Pre-Race Challenge: Locate Your Accommodation!</strong>
-                    <br>
-                    You and Michael need to locate a cheap hotel for the night in Central London, near the West End. Research and select a few potential hotel choices, considering location, price, and reviews. Inform Michael of your top picks!
-                    <br>
-                    <br>
-                    The main race starts on <strong>26th July 2025</strong>! Come back then to begin your grand journey from Nottingham!
-                `,
-                emoji: "🏁",
-                clueEmoji: "💡",
-                requiresAnswer: false,
-                isPreRace: true // New flag for the opening page
-            },
-            {
-                title: "Your Grand Adventure Begins: 22 Kennedy Drive, NG9 8HT!",
-                instructions: `
-                    Welcome to your very own 'Race Across London' Lauren! Your first mission is to get from our wonderful home at <strong>22 Kennedy Drive, NG9 8HT</strong>, all the way to <strong>Stanmore Train Station</strong> in London.
-                    <br><br>
-                    <strong>Your task:</strong> From 22 Kennedy Drive, NG9 8HT, travel to Stanmore Train Station, HA7 2DX. Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> This first leg is about getting to the starting line in London. Michael will be with you, ready for adventure!
-                `,
-                emoji: "🏠",
-                clueEmoji: "🗺️",
-                requiresAnswer: false
-            },
-            {
-                title: "Checkpoint 1: Stanmore Station to The British Museum",
-                instructions: `
-                    Excellent! You've made it to Stanmore, the gateway to your London adventure. Now for a dive into history and culture!
-                    <br><br>
-                    <strong>Your task:</strong> From Stanmore Station, travel to <strong>The British Museum</strong> (Great Russell St, London WC1B 3DG). Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> Count the columns on the front.
-                `,
-                emoji: "🚆",
-                clueEmoji: "🏺",
-                requiresAnswer: true,
-                question: "How many massive Ionic columns are there on the very front façade of The British Museum, excluding those on the sides or within the entrance recess?",
-                answer: "14", // Very specific count for the main portico
-                jobExperience: {
-                    title: "Job Experience: 'Ancient Brew Master'",
-                    description: `
-                        For an optional 'Job Experience' at The British Museum:
-                        <br><br>
-                        <strong>Your task:</strong> Head to <strong>The Great Court Restaurant</strong> on the upper level, or pop into <strong>Pret A Manger</strong> just outside on Russell Square. Treat yourselves to a well-deserved coffee!
-                        <br>
-                        <strong>Reward:</strong> A moment of respite and energy for your journey!
-                    `
-                },
-                bonusQuestions: [
-                    {
-                        question: "What large structure is covered by a distinctive glass and steel roof in the centre of the museum?",
-                        options: ["Great Court", "Reading Room", "Egyptian Hall"],
-                        correctAnswer: "Great Court"
-                    },
-                    {
-                        question: "Which ancient civilization's artefacts are housed in rooms 62-63, known for their elaborate burial practices?",
-                        options: ["Roman", "Greek", "Egyptian"],
-                        correctAnswer: "Egyptian"
-                    },
-                    {
-                        question: "Outside the museum, near the main entrance, you can find a statue of a famous Greek thinker. What is his name?",
-                        options: ["Plato", "Aristotle", "Socrates"],
-                        correctAnswer: "Socrates"
-                    },
-                    {
-                        question: "The museum shop sells replicas of a certain ancient board game. What is its name?",
-                        options: ["Chess", "Senet", "Backgammon"],
-                        correctAnswer: "Senet"
-                    }
-                ]
-            },
-            {
-                title: "Checkpoint 2: The British Museum to Covent Garden",
-                instructions: `
-                    You've uncovered ancient wonders! Now, let's head to a vibrant hub of entertainment and charm!
-                    <br><br>
-                    <strong>Your task:</strong> From The British Museum, travel to <strong>Covent Garden</strong> (The Piazza, London WC2E 8RF). Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> Look for a very specific type of street lamp.
-                `,
-                emoji: "🚶",
-                clueEmoji: "🎶",
-                requiresAnswer: true,
-                question: "On the perimeter of the main Covent Garden Piazza, what famous feature (often photographed) is attached to some of the ornate street lamps, and provides a direct source of gas?",
-                answer: "Gaslight",
-                jobExperience: {
-                    title: "Job Experience: 'Market Lunch Critic'",
-                    description: `
-                        For an optional 'Job Experience' at Covent Garden:
-                        <br><br>
-                        <strong>Your task:</strong> Explore the delightful food stalls within the market or pop into <strong>Monmouth Coffee Company</strong> on Monmouth Street. Grab a speciality coffee or a delicious pastry for lunch. For a quick bite, there's also a <strong>Joe & The Juice</strong> nearby.
-                        <br>
-                        <strong>Reward:</strong> A taste of London's culinary delights and satisfied tummies!
-                    `
-                },
-                bonusQuestions: [
-                    {
-                        question: "What historical opera house is located adjacent to Covent Garden Piazza?",
-                        options: ["Royal Albert Hall", "Royal Opera House", "London Coliseum"],
-                        correctAnswer: "Royal Opera House"
-                    },
-                    {
-                        question: "Many street performers use a certain large object for their acts. What kind of object is it often?",
-                        options: ["Unicycle", "Ladder", "Fire extinguisher"],
-                        correctAnswer: "Unicycle"
-                    },
-                    {
-                        question: "A well-known character often associated with Covent Garden is a flower seller. From which famous musical is this character?",
-                        options: ["Les Misérables", "My Fair Lady", "Phantom of the Opera"],
-                        correctAnswer: "My Fair Lady"
-                    },
-                    {
-                        question: "What is the main type of goods sold at the Apple Market inside Covent Garden on Mondays?",
-                        options: ["Antiques", "Crafts", "Food"],
-                        correctAnswer: "Antiques"
-                    }
-                ]
-            },
-            {
-                title: "Checkpoint 3: Covent Garden to Trafalgar Square",
-                instructions: `
-                    The buzz of Covent Garden is behind you, and an iconic landmark awaits!
-                    <br><br>
-                    <strong>Your task:</strong> From Covent Garden, travel to <strong>Trafalgar Square</strong> (London WC2N 5DN). Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> Look for a famous statue of a king on horseback.
-                `,
-                emoji: "🏛️",
-                clueEmoji: "🇬🇧",
-                requiresAnswer: true,
-                question: "On a plinth in Trafalgar Square, directly south of the National Gallery, there is an equestrian statue of a King. What is the name of this King?",
-                answer: "George IV",
-                jobExperience: {
-                    title: "Job Experience: 'Patio Coffee Reviewer'",
-                    description: `
-                        For an optional 'Job Experience' at Trafalgar Square:
-                        <br><br>
-                        <strong>Your task:</strong> Visit <strong>The National Cafe</strong> inside the National Gallery, or find a comfortable spot at <strong>Pret A Manger</strong> or <strong>Starbucks</strong> nearby. Enjoy a coffee with a view!
-                        <br>
-                        <strong>Reward:</strong> A refreshing break and people-watching expertise!
-                    `
-                },
-                bonusQuestions: [
-                    {
-                        question: "What is the name of the large art gallery that dominates the northern side of Trafalgar Square?",
-                        options: ["Tate Modern", "National Portrait Gallery", "The National Gallery"],
-                        correctAnswer: "The National Gallery"
-                    },
-                    {
-                        question: "Apart from Nelson, which other major historical figure has a prominent statue on a plinth in the square, often called the 'empty plinth' due to rotating art?",
-                        options: ["King Charles I", "Duke of Wellington", "George Washington"],
-                        correctAnswer: "King Charles I"
-                    },
-                    {
-                        question: "The bronze lions were cast from melted-down cannons from which battle?",
-                        options: ["Battle of Waterloo", "Battle of Trafalgar", "Battle of Hastings"],
-                        correctAnswer: "Battle of Trafalgar"
-                    },
-                    {
-                        question: "What type of birds are historically very numerous in Trafalgar Square, though efforts have been made to reduce their numbers?",
-                        options: ["Sparrows", "Pigeons", "Gulls"],
-                        correctAnswer: "Pigeons"
-                    }
-                ]
-            },
-            {
-                title: "Checkpoint 4: Trafalgar Square to Buckingham Palace",
-                instructions: `
-                    You've conquered Trafalgar Square! Your next stop is steeped in royal history.
-                    <br><br>
-                    <strong>Your task:</strong> From Trafalgar Square, travel to <strong>Buckingham Palace</strong> (London SW1A 1AA). Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> Find the large triumphal arch nearby.
-                `,
-                emoji: "🌳",
-                clueEmoji: "👸",
-                requiresAnswer: true,
-                question: "Close to Buckingham Palace, leading into St. James's Park, stands a large triumphal arch. What is the name of this arch?",
-                answer: "Admiralty Arch",
-                jobExperience: {
-                    title: "Job Experience: 'Royal Tea Taster'",
-                    description: `
-                        For an optional 'Job Experience' near Buckingham Palace:
-                        <br><br>
-                        <strong>Your task:</strong> Head to <strong>St. James's Cafe</strong> within St. James's Park, or for something a bit grander, <strong>The Wolseley</strong> on Piccadilly. You could also find a <strong>Gail's Bakery</strong> near Victoria Station. Enjoy a sophisticated coffee or a delightful pastry, perhaps even a scone!
-                        <br>
-                        <strong>Reward:</strong> A truly regal culinary experience!
-                    `
-                },
-                bonusQuestions: [
-                    {
-                        question: "What is the name of the park directly adjacent to Buckingham Palace, famous for its pelicans?",
-                        options: ["Hyde Park", "St. James's Park", "Green Park"],
-                        correctAnswer: "St. James's Park"
-                    },
-                    {
-                        question: "The balcony of Buckingham Palace is famous for royal appearances. In which month is the Trooping the Colour ceremony held, concluding with a balcony appearance?",
-                        options: ["May", "June", "July"],
-                        correctAnswer: "June"
-                    },
-                    {
-                        question: "Which well-known avenue leads directly from Admiralty Arch to the Victoria Memorial in front of the palace?",
-                        options: ["Pall Mall", "Birdcage Walk", "The Mall"],
-                        correctAnswer: "The Mall"
-                    }
-                ]
-            },
-            {
-                title: "Checkpoint 5: Buckingham Palace to St Martin's Lane!",
-                instructions: `
-                    The next leg of your amazing journey is here Lauren! Prepare for an unforgettable experience!
-                    <br><br>
-                    <strong>Your task:</strong> From Buckingham Palace, travel to the <strong>London Coliseum</strong>, located at <strong>St Martin's Lane, London WC2N 4ES</strong>. Travel however you like!
-                    <br>
-                    <strong>Clue:</strong> The show is about to begin! The final challenge is to simply arrive!
-                `,
-                emoji: "✨",
-                clueEmoji: "🍾",
-                requiresAnswer: false,
-            },
-            {
-                title: "Race Complete!",
-                instructions: `
-                    You've successfully completed your incredible 'Race Across London' Lauren!
-                    <br><br>
-                    From our home in Nottingham, through the bustling heart of London, navigating challenges and uncovering secrets, you've arrived at the theatre like a true adventurer.
-                    <br><br>
-                    You also earned a bonus of <strong>£${0}</strong> for tomorrow's shopping! Well done!
-                    <br><br>
-                    Now, it's time to immerse yourselves fully in the magic of:
-                    <br><br>
-                    <div class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-purple-700 animate-pulse-reveal mt-6 mb-6">
-                        THE GREAT GATSBY!
-                    </div>
-                    <br><br>
-                    We hope you both have an absolutely wonderful and unforgettable time!
-                    <br><br>
-                    With all our love,
-                    <br>
-                    Your devoted Michael ❤️
-                `,
-                emoji: "💖",
-                clueEmoji: "🏆",
-                isFinal: true
-            }
-        ];
+        // --- Countdown Timer ---
+        const countdownDate = new Date("2025-07-26T14:30:00").getTime();
 
-        // Get references to DOM elements
-        const countdownElement = document.getElementById('countdown');
-        const stageContentArea = document.getElementById('stage-content-area');
-        const nextButton = document.getElementById('next-button');
-        const restartButton = document.getElementById('restart-button');
-        const gameTitle = document.getElementById('game-title');
-        const dateGateMessage = document.getElementById('date-gate-message'); // Reference to the date gate message
-        const answerSection = document.getElementById('answer-section');
-        const challengeQuestion = document.getElementById('challenge-question');
-        const answerInput = document.getElementById('answer-input');
-        const submitAnswerButton = document.getElementById('submit-answer-button');
-        const giveUpButton = document.getElementById('give-up-button');
-        const feedbackMessage = document.getElementById('feedback-message');
-        const jobExperienceSection = document.getElementById('job-experience-section');
-        const jobExperienceTitle = document.getElementById('job-experience-title');
-        const jobExperienceDescription = document.getElementById('job-experience-description');
-        const selfieSection = document.getElementById('selfie-section');
-        const bonusQuestionsSection = document.getElementById('bonus-questions-section');
-        const bonusQuestionsList = document.getElementById('bonus-questions-list');
-        const submitBonusAnswersButton = document.getElementById('submit-bonus-answers-button');
-        const skipBonusQuestionsButton = document.getElementById('skip-bonus-questions-button');
-        const bonusFeedbackMessage = document.getElementById('bonus-feedback-message');
-
-
-        /**
-         * Updates the UI to display the current stage's content and challenge.
-         */
-        function updateUI() {
-            // Clear previous content to allow for re-animation
-            stageContentArea.innerHTML = '';
-            feedbackMessage.textContent = ''; // Clear previous main question feedback
-            bonusFeedbackMessage.textContent = ''; // Clear previous bonus question feedback (though it's hidden)
-            jobExperienceSection.style.display = 'none'; // Hide job experience section
-            selfieSection.style.display = 'none'; // Hide selfie section
-            bonusQuestionsSection.style.display = 'none'; // Hide bonus questions section
-            bonusFeedbackMessage.style.display = 'none'; // Ensure bonus feedback is hidden
-
-            const currentStage = stages[currentStageIndex];
-            const now = new Date();
-            // Race starts on 26th July 2025, 00:00:00 (midnight)
-            const raceStartDate = new Date('July 26, 2025 00:00:00 GMT+0100'); // Ensure GMT+1 for BST
-
-            // Date gate logic for the first stage (index 0)
-            if (currentStageIndex === 0) {
-                nextButton.textContent = "Start Your London Race 🚀";
-                if (now < raceStartDate) {
-                    nextButton.disabled = true; // Disable next button if too early
-                    dateGateMessage.style.display = 'block'; // Show date gate message
-                } else {
-                    nextButton.disabled = false; // Enable if past date
-                    dateGateMessage.style.display = 'none'; // Hide date gate message
-                }
-                // Hide other interactive sections for the welcome page
-                answerSection.style.display = 'none';
-                selfieSection.style.display = 'none';
-                jobExperienceSection.style.display = 'none';
-                bonusQuestionsSection.style.display = 'none';
-            } else {
-                nextButton.textContent = "Next Stage 🚀"; // Revert button text for subsequent stages
-                dateGateMessage.style.display = 'none'; // Ensure hidden on all other pages
-
-                // Handle main challenge section visibility and button states for other stages
-                if (currentStage.requiresAnswer) {
-                    answerSection.style.display = 'flex'; // Show main answer section
-                    challengeQuestion.textContent = currentStage.question;
-                    answerInput.value = ''; // Clear input field
-                    nextButton.disabled = true; // Disable next button until answered or skipped
-                    submitAnswerButton.style.display = 'block'; // Show submit button
-                    giveUpButton.style.display = 'block'; // Show give up button
-                    answerInput.style.display = 'block'; // Show input field
-                    answerInput.focus(); // Focus on the input for convenience
-                } else {
-                    answerSection.style.display = 'none'; // Hide main answer section
-                    nextButton.disabled = false; // Enable next button if no answer required
-                }
-            }
-
-
-            // Create and append stage title (this part is common for all stages)
-            const stageTitleElement = document.createElement('h2');
-            stageTitleElement.className = 'text-2xl md:text-3xl font-bold text-blue-600 mb-4 stage-content';
-            stageTitleElement.innerHTML = `${currentStage.emoji} ${currentStage.title}`;
-            stageContentArea.appendChild(stageTitleElement);
-
-            // Create and append instructions (this part is common for all stages)
-            const instructionsElement = document.createElement('p');
-            instructionsElement.className = 'text-base md:text-lg text-gray-700 leading-relaxed mb-6 stage-content';
-
-            // Special handling for the very last stage to reveal "THE GREAT GATSBY!" and bonus money
-            if (currentStage.isFinal && currentStageIndex === stages.length - 1) {
-                // Manually construct the final instructions to inject the live totalBonusMoney
-                const finalInstructionsHTML = `
-                    You've successfully completed your incredible 'Race Across London' Lauren!
-                    <br><br>
-                    From our home in Nottingham, through the bustling heart of London, navigating challenges and uncovering secrets, you've arrived at the theatre like a true adventurer.
-                    <br><br>
-                    You also earned a bonus of <strong>£${totalBonusMoney}</strong> for tomorrow's shopping! Well done!
-                    <br><br>
-                    Now, it's time to immerse yourselves fully in the magic of:
-                    <br><br>
-                    <div class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-purple-700 animate-pulse-reveal mt-6 mb-6">
-                        THE GREAT GATSBY!
-                    </div>
-                    <br><br>
-                    We hope you both have an absolutely wonderful and unforgettable time!
-                    <br><br>
-                    With all our love,
-                    <br>
-                    Your devoted Michael ❤️
-                `;
-                instructionsElement.innerHTML = finalInstructionsHTML;
-            } else {
-                instructionsElement.innerHTML = currentStage.instructions;
-            }
-            stageContentArea.appendChild(instructionsElement);
-
-
-            // Hide/show restart button based on whether it's the very final stage
-            if (currentStage.isFinal && currentStageIndex === stages.length - 1) { // Only show on the final congratulations screen
-                nextButton.style.display = 'none';
-                restartButton.style.display = 'block';
-                gameTitle.classList.remove('animate-bounce'); // Stop bounce on final screen
-            } else {
-                nextButton.style.display = 'block';
-                restartButton.style.display = 'none';
-                gameTitle.classList.add('animate-bounce'); // Continue bounce
-            }
-
-            // The stage before the final one (hotel challenge / London Coliseum arrival) should always have next enabled if no main question.
-            // This is handled by the `else` block for `requiresAnswer` and the date gate.
-        }
-
-        /**
-         * Unlocks the next stage after a main question is answered/given up.
-         * Reveals job experience, selfie prompt, and bonus questions.
-         */
-        function unlockNextStage(message, isCorrect) {
-            feedbackMessage.textContent = message;
-            feedbackMessage.className = `feedback-message ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`;
-
-            submitAnswerButton.style.display = 'none'; // Hide submit button
-            giveUpButton.style.display = 'none'; // Hide give up button
-            answerInput.style.display = 'none'; // Hide input field
-
-            // Show selfie requirement for London checkpoints (not for first intro page)
-            if (currentStageIndex > 0 && !stages[currentStageIndex].isPreRace) { // Only show selfie for actual London checkpoints
-                selfieSection.style.display = 'block';
-            }
-
-
-            const currentStage = stages[currentStageIndex];
-            if (currentStage.jobExperience) {
-                jobExperienceTitle.textContent = currentStage.jobExperience.title;
-                jobExperienceDescription.innerHTML = currentStage.jobExperience.description;
-                jobExperienceSection.style.display = 'block'; // Show job experience
-            }
-
-            // Display bonus questions if they exist for this stage
-            if (currentStage.bonusQuestions && currentStage.bonusQuestions.length > 0) {
-                bonusQuestionsSection.style.display = 'block';
-                bonusQuestionsList.innerHTML = ''; // Clear previous bonus questions
-                submitBonusAnswersButton.disabled = false; // Enable submit bonus button
-                skipBonusQuestionsButton.disabled = false; // Enable skip bonus button
-
-                currentStage.bonusQuestions.forEach((bq, index) => {
-                    const qDiv = document.createElement('div');
-                    qDiv.className = 'bonus-question';
-                    qDiv.innerHTML = `<p>${index + 1}. ${bq.question}</p>`;
-
-                    // Create a unique name for each bonus question's radio group
-                    const radioGroupName = `bonus-q-${currentStageIndex}-${index}`;
-                    bq.options.forEach((option, optIndex) => {
-                        const optDiv = document.createElement('div');
-                        optDiv.className = 'bonus-option';
-                        optDiv.innerHTML = `
-                            <input type="radio" id="bonus-${currentStageIndex}-${index}-opt-${optIndex}" name="${radioGroupName}" value="${option.toLowerCase()}">
-                            <label for="bonus-${currentStageIndex}-${index}-opt-${optIndex}">${option}</label>
-                        `;
-                        qDiv.appendChild(optDiv);
-                    });
-                    bonusQuestionsList.appendChild(qDiv);
-                });
-                nextButton.disabled = true; // Disable next button until bonus questions are submitted/skipped
-            } else {
-                nextButton.disabled = false; // Enable if no bonus questions
-            }
-        }
-
-        /**
-         * Checks the user's answer against the correct one for the current main stage question.
-         */
-        function checkAnswer() {
-            const currentStage = stages[currentStageIndex];
-            if (!currentStage.requiresAnswer) return;
-
-            const userAnswer = answerInput.value.trim().toLowerCase();
-            const correctAnswer = currentStage.answer.toLowerCase();
-
-            if (userAnswer === correctAnswer) {
-                unlockNextStage('Correct! You\'ve cracked the code!', true);
-            } else {
-                feedbackMessage.textContent = 'Oops! That\'s not quite right. Double-check your answer and try again!';
-                feedbackMessage.className = 'feedback-message feedback-incorrect';
-                nextButton.disabled = true; // Keep next button disabled
-            }
-        }
-
-        /**
-         * Handles the 'Give Up' action for the main question.
-         */
-        function giveUp() {
-            const currentStage = stages[currentStageIndex];
-            const message = `You gave up! The correct answer was: <strong>${currentStage.answer}</strong>.`;
-            unlockNextStage(message, false); // Not correct, but unlocks next steps
-        }
-
-        /**
-         * Checks answers for bonus questions and tallies bonus money.
-         */
-        function submitBonusAnswers() {
-            let correctCount = 0;
-            const currentStage = stages[currentStageIndex];
-
-            currentStage.bonusQuestions.forEach((bq, index) => {
-                const radioGroupName = `bonus-q-${currentStageIndex}-${index}`; // Match the name used in rendering
-                const selectedOption = document.querySelector(`input[name="${radioGroupName}"]:checked`);
-                if (selectedOption && selectedOption.value === bq.correctAnswer.toLowerCase()) {
-                    correctCount++;
-                }
-            });
-
-            totalBonusMoney += correctCount; // Add to global total
-            // No immediate feedback for bonus questions, only at the end.
-            bonusFeedbackMessage.style.display = 'none'; // Ensure bonus feedback is hidden
-            submitBonusAnswersButton.disabled = true; // Disable bonus submit button
-            skipBonusQuestionsButton.disabled = true; // Disable skip button too
-
-            // Disable all bonus question radios after submission
-            currentStage.bonusQuestions.forEach((bq, index) => {
-                const radioGroupName = `bonus-q-${currentStageIndex}-${index}`;
-                const radios = document.querySelectorAll(`input[name="${radioGroupName}"]`);
-                radios.forEach(radio => radio.disabled = true);
-            });
-
-            nextButton.disabled = false; // Enable the next button after bonus questions are done
-        }
-
-        /**
-         * Handles skipping bonus questions.
-         */
-        function skipBonusQuestions() {
-            bonusQuestionsSection.style.display = 'none'; // Hide the bonus section
-            nextButton.disabled = false; // Enable the next button
-        }
-
-        /**
-         * Advances to the next stage of the game.
-         */
-        function nextStage() {
-            if (currentStageIndex < stages.length - 1) {
-                currentStageIndex++;
-                updateUI();
-            }
-        }
-
-        /**
-         * Restarts the game from the beginning.
-         */
-        function restartGame() {
-            currentStageIndex = 0;
-            totalBonusMoney = 0; // Reset bonus money
-            updateUI();
-        }
-
-        // Add event listeners to buttons
-        nextButton.addEventListener('click', nextStage);
-        restartButton.addEventListener('click', restartGame);
-        submitAnswerButton.addEventListener('click', checkAnswer);
-        giveUpButton.addEventListener('click', giveUp);
-        submitBonusAnswersButton.addEventListener('click', submitBonusAnswers);
-        skipBonusQuestionsButton.addEventListener('click', skipBonusQuestions);
-
-        // Allow pressing Enter in the main input field to submit the answer
-        answerInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                checkAnswer();
-            }
-        });
-
-        // --- Countdown Timer Logic ---
-        function updateCountdown() {
-            const targetDate = new Date('July 26, 2025 19:00:00 GMT+0100').getTime(); // BST is GMT+1
+        const countdownFunction = setInterval(() => {
             const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                countdownElement.innerHTML = "THE SHOW IS STARTING NOW!";
-                clearInterval(countdownInterval);
-                return;
-            }
+            const distance = countdownDate - now;
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            const milliseconds = Math.floor((distance % 1000));
 
-            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s ${milliseconds}ms`;
+            const countdownElement = document.getElementById("countdown");
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                countdownElement.innerHTML = "<div class='font-bold text-lg'>The Race is ON!</div>";
+            } else {
+                 countdownElement.innerHTML = `
+                    <div class='text-center'><div class='text-2xl font-bold'>${days}</div><div class='text-xs'>Days</div></div>
+                    <div class='text-2xl font-bold'>:</div>
+                    <div class='text-center'><div class='text-2xl font-bold'>${hours}</div><div class='text-xs'>Hours</div></div>
+                    <div class='text-2xl font-bold'>:</div>
+                    <div class='text-center'><div class='text-2xl font-bold'>${minutes}</div><div class='text-xs'>Mins</div></div>
+                    <div class='text-2xl font-bold'>:</div>
+                    <div class='text-center'><div class='text-2xl font-bold'>${seconds}</div><div class='text-xs'>Secs</div></div>
+                 `;
+            }
+            
+            const startButton = document.getElementById('start-race-btn');
+            const startMessage = document.getElementById('start-race-message');
+            startButton.disabled = false;
+            startMessage.textContent = "Click to preview the race!";
+
+        }, 1000);
+
+        // --- Navigation ---
+        function navigateTo(pageIndex) {
+            pages[currentPage].classList.remove('active');
+            currentPage = pageIndex;
+            pages[currentPage].classList.add('active');
+            window.scrollTo(0, 0);
         }
 
-        // Update the countdown every millisecond
-        const countdownInterval = setInterval(updateCountdown, 1);
-
-        // Initial UI load when the window is ready
-        window.onload = function() {
-            updateUI();
-            updateCountdown(); // Call once immediately to avoid delay
+        // --- Quiz Logic ---
+        const answers = {
+            1: { accepted: ['a phone box', 'phone box', 'a telephone box', 'telephone box', 'red phone box', 'red telephone box'], reveal: 'A phone box' },
+            2: { accepted: ['v'], reveal: 'V' },
+            3: { accepted: ['a lion', 'lion'], reveal: 'A Lion' },
+            4: { accepted: ['1542'], reveal: '1542' }
         };
+
+        const selfiePrompts = {
+            1: "Time for a victory selfie! Pose like you're making a top-secret call in your new-found phone box!",
+            2: "Selfie time! Point dramatically at the clock like you've just solved a great mystery.",
+            3: "You found it! Quick, a selfie! Look regal and pretend you own the place. Give us your best royal wave!",
+            4: "Success! Time for a historical selfie. Pose with your best 'cheers' as if you're a 16th-century traveller enjoying a pint!"
+        };
+
+        function checkAnswer(checkpoint) {
+            const feedbackEl = document.getElementById(`feedback-${checkpoint}`);
+            const inputEl = document.getElementById(`answer-${checkpoint}`);
+            const providedAnswer = inputEl.value.trim().toLowerCase();
+            
+            if (answers[checkpoint].accepted.includes(providedAnswer)) {
+                feedbackEl.textContent = 'Well done! That\'s correct!';
+                feedbackEl.classList.remove('text-red-500');
+                feedbackEl.classList.add('text-green-500');
+                revealInfo(checkpoint, true); // Pass true for correct answer
+            } else {
+                wrongAttempts[checkpoint]++;
+                feedbackEl.classList.add('text-red-500');
+                feedbackEl.classList.remove('text-green-500');
+                if (wrongAttempts[checkpoint] >= 3) {
+                    feedbackEl.textContent = `Sorry, that's not quite right. The correct answer is: ${answers[checkpoint].reveal}`;
+                    revealInfo(checkpoint, false);
+                } else {
+                    feedbackEl.textContent = 'Not quite, try again!';
+                    inputEl.value = '';
+                }
+            }
+        }
+
+        function giveUp(checkpoint) {
+            const feedbackEl = document.getElementById(`feedback-${checkpoint}`);
+            feedbackEl.textContent = `The correct answer is: ${answers[checkpoint].reveal}`;
+            feedbackEl.classList.remove('text-red-500');
+            feedbackEl.classList.add('text-blue-500');
+            revealInfo(checkpoint, false);
+        }
+
+        function revealInfo(checkpoint, isCorrect) {
+            document.getElementById(`info-${checkpoint}`).classList.remove('hidden');
+            
+            if (isCorrect) {
+                const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
+                selfieEl.innerHTML = `📸 ${selfiePrompts[checkpoint]}`;
+                selfieEl.style.display = 'block';
+            } else {
+                const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
+                selfieEl.style.display = 'none';
+            }
+
+            document.getElementById(`answer-${checkpoint}`).disabled = true;
+            const actionButtons = document.querySelector(`#page-${currentPage} .mt-4.space-x-4`);
+            if(actionButtons) actionButtons.style.display = 'none';
+        }
+
+        // Initialize first page
+        document.addEventListener('DOMContentLoaded', () => {
+             pages[0].classList.add('active');
+        });
     </script>
+
 </body>
 </html>
