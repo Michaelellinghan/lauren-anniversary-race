@@ -150,6 +150,10 @@
             z-index: 99;
             pointer-events: none;
         }
+        
+        .fact-box {
+            @apply bg-yellow-200/80 backdrop-blur-sm p-4 rounded-2xl text-gray-800 italic mt-4 text-sm;
+        }
 
     </style>
 </head>
@@ -224,6 +228,9 @@
             </div>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
+                <div class="fact-box">
+                    <p><strong>Did you know?</strong> Stanmore is the northern terminus of the Jubilee Line!</p>
+                </div>
                 <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your first mission: From 22 Kennedy Drive, NG9 8HT, travel to Stanmore Train Station, HA7 2DX. Travel however you like!</p>
@@ -239,6 +246,9 @@
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
+                <div class="fact-box">
+                    <p><strong>Did you know?</strong> The poet Robert Browning coined the name 'Little Venice' for this area in the 19th century.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
             </div>
@@ -297,6 +307,9 @@
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Well done! Now, let's head to the heart of Theatreland.</p>
+                 <div class="fact-box">
+                    <p><strong>Did you know?</strong> Leicester Square was named after Robert Sidney, the 2nd Earl of Leicester, who built a large house there in the 1630s.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
             </div>
@@ -357,6 +370,9 @@
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time for a touch of grandeur.</p>
+                <div class="fact-box">
+                    <p><strong>Did you know?</strong> Green Park is the quietest of the central Royal Parks, with no lakes or buildings and very few formal flowerbeds.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Green Park.</p>
             </div>
@@ -416,6 +432,9 @@
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Great job! Now it’s time to cross the river.</p>
+                 <div class="fact-box">
+                    <p><strong>Did you know?</strong> The current London Bridge is only from 1973. Several older bridges have existed at this spot for nearly 2,000 years!</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
             </div>
@@ -475,14 +494,54 @@
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p>Perfect. One more destination before we go find our hotel at 72 Prebend Street.</p>
+                 <div class="fact-box">
+                    <p><strong>Did you know?</strong> Islington has more theatres than any other part of London, including the famous Almeida and Sadler's Wells.</p>
+                </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Islington.</p>
             </div>
-            <button onclick="navigateTo(11)" class="btn mt-8">I’ve Arrived</button>
+            <button onclick="navigateTo(11)" class="btn mt-8">I’ve Arrived at the Hotel!</button>
         </div>
 
-        <!-- Page 11: Final Page -->
-        <div id="page-11" class="page text-white">
+        <!-- Page 11: Finish Line -->
+        <div id="page-11" class="page text-center text-white">
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">You've Reached the Finish Line!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-center">
+                <p class="text-xl">Congratulations on completing all the checkpoints!</p>
+                <p>You're at the final destination for today's race.</p>
+                <p class="font-bold mt-4">Ready to stop the clock and see your results?</p>
+            </div>
+            <button onclick="navigateTo(12)" class="btn mt-8">Finish Today's Race!</button>
+        </div>
+        
+        <!-- Page 12: Race Log -->
+        <div id="page-12" class="page text-center text-white">
+            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
+                <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
+                <div class="text-xl">
+                    <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
+                </div>
+                <div class="text-xl">
+                    <p><strong>Selfies Taken:</strong> <span id="log-selfies"></span></p>
+                </div>
+                <div class="text-xl">
+                    <p><strong>Souvenirs Collected:</strong> <span id="log-souvenirs" class="text-2xl"></span></p>
+                </div>
+                <div class="text-xl">
+                    <p><strong>Total Race Time:</strong> <span id="log-time"></span></p>
+                </div>
+                 <div class="text-xl font-bold text-yellow-500">
+                    <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest"></span></p>
+                </div>
+                <hr class="my-4 border-pink-300">
+                <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
+                <button onclick="navigateTo(13)" class="btn mt-8">What Now?</button>
+            </div>
+        </div>
+        
+        <!-- Page 13: Final Suggestions -->
+        <div id="page-13" class="page text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6 text-center">The Adventure Continues...</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
                 <p class="text-xl text-center">...tomorrow! But for now, what would you like to do?</p>
@@ -514,31 +573,6 @@
                     </ul>
                 </div>
                 <p class="font-bold text-xl text-center mt-8">Ready for tomorrow? Michael will reveal the plans then.</p>
-                <div class="text-center">
-                    <button onclick="navigateTo(12)" class="btn mt-8">Finish Today's Race!</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Page 12: Race Log -->
-        <div id="page-12" class="page text-center text-white">
-            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
-            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
-                <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
-                <div class="text-xl">
-                    <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
-                </div>
-                <div class="text-xl">
-                    <p><strong>Selfies Taken:</strong> <span id="log-selfies"></span></p>
-                </div>
-                <div class="text-xl">
-                    <p><strong>Total Race Time:</strong> <span id="log-time"></span></p>
-                </div>
-                 <div class="text-xl font-bold text-yellow-500">
-                    <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest"></span></p>
-                </div>
-                <hr class="my-4 border-pink-300">
-                <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
             </div>
         </div>
 
@@ -559,7 +593,7 @@
         let pauseStartTime;
         let questionStartTime;
         const checkpointTimes = {};
-
+        let collectedSouvenirs = [];
 
         // --- Sound Effects ---
         let soundsReady = false;
@@ -646,7 +680,7 @@
             for (const key in locations) {
                 const loc = locations[key];
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("id", `loc-${key}`);
+                circle.setAttribute("id", `loc-${key}-${svgId}`);
                 circle.setAttribute("cx", loc.x);
                 circle.setAttribute("cy", loc.y);
                 circle.setAttribute("r", "2");
@@ -677,7 +711,7 @@
                 // Animate destination marker
                 setTimeout(() => {
                     const toLocKey = Object.keys(locations).find(key => locations[key] === toLoc);
-                    document.getElementById(`loc-${toLocKey}`).classList.add('pulse');
+                    document.getElementById(`loc-${toLocKey}-${svgId}`).classList.add('pulse');
                 }, 2500); // Start after path animation
             }
         }
@@ -722,6 +756,7 @@
                     clearInterval(raceTimerInterval);
                     document.getElementById('log-checkpoints').textContent = checkpointsCompleted;
                     document.getElementById('log-selfies').textContent = selfiesTaken;
+                    document.getElementById('log-souvenirs').textContent = collectedSouvenirs.join(' ');
                     
                     // Calculate fastest checkpoint
                     let fastestTime = Infinity;
@@ -746,6 +781,10 @@
         }
 
         // --- Quiz Logic ---
+        const souvenirs = {
+            1: '☎️', 2: '🎭', 3: '👑', 4: '🍺'
+        };
+
         const answers = {
             1: { accepted: ['a phone box', 'phone box', 'a telephone box', 'telephone box', 'red phone box', 'red telephone box'], reveal: 'A phone box' },
             2: { accepted: ['v'], reveal: 'V' },
@@ -808,6 +847,7 @@
             if (isCorrect) {
                 checkpointsCompleted++;
                 selfiesTaken++;
+                collectedSouvenirs.push(souvenirs[checkpoint]);
                 const selfieEl = document.getElementById(`selfie-prompt-${checkpoint}`);
                 selfieEl.innerHTML = `📸 ${selfiePrompts[checkpoint]}`;
                 selfieEl.style.display = 'block';
