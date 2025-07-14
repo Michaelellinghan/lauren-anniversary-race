@@ -127,18 +127,7 @@
         .map-container.zoomed {
             transform: scale(1.03);
         }
-        .map-path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            animation: draw-line 2s ease-in-out forwards 0.5s;
-        }
         
-        @keyframes draw-line {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
         @keyframes pulse {
             0% { r: 3; opacity: 1; }
             50% { r: 5; opacity: 0.5; }
@@ -272,6 +261,10 @@
             <h2 class="text-2xl md:text-3xl font-bold mb-8">A special 7th anniversary adventure!</h2>
             
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
+                <div class="fact-box">
+                    <svg class="fox-mascot" viewBox="0 0 100 100"><use href="#felix-the-fox"></use></svg>
+                    <p>Hello there! I'm Felix, your official guide for this race. Let's have a brilliant adventure!</p>
+                </div>
                 <p class="text-lg">Welcome to your Race Across London! (Legally different from Race Across the World 😉)</p>
                 <p>Lauren, I hope you’re ready for a special anniversary adventure I have prepared for you!</p>
                 <p>This is your very own 'Race Across London' – an exciting journey with various checkpoints and questions!</p>
@@ -298,7 +291,7 @@
                 <h2 class="font-bold text-2xl text-center text-pink-500">Destination: Stanmore Station!</h2>
                 <div class="fact-box">
                      <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-1"></svg>
-                    <p><strong>Did you know?</strong> Stanmore was home to RAF Bentley Priory, the HQ of Fighter Command during the Battle of Britain.</p>
+                    <p id="tube-status-1">Fetching tube status...</p>
                 </div>
                 <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
                 <hr class="my-6 border-pink-300">
@@ -317,7 +310,7 @@
                 <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <div class="fact-box">
                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-2"></svg>
-                    <p><strong>Did you know?</strong> The area is home to the Puppet Theatre Barge, a unique 55-seat floating puppet theatre.</p>
+                    <p id="tube-status-2">Fetching tube status...</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
@@ -382,7 +375,7 @@
                 <p>Well done! Now, let's head to the heart of Theatreland.</p>
                  <div class="fact-box">
                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-4"></svg>
-                    <p><strong>Did you know?</strong> The first ever public film screening in the UK took place at the Regent Street Polytechnic, just a short walk from Leicester Square, in 1896.</p>
+                    <p id="tube-status-4">Fetching tube status...</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
@@ -449,7 +442,7 @@
                 <p>Great job! Now it’s time for a touch of grandeur.</p>
                 <div class="fact-box">
                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-6"></svg>
-                    <p><strong>Did you know?</strong> It's said no flowers grow in Green Park because Queen Catherine ordered them removed after catching King Charles II picking them there for another woman!</p>
+                    <p id="tube-status-6">Fetching tube status...</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to Green Park.</p>
@@ -515,7 +508,7 @@
                 <p>Great job! Now it’s time to cross the river.</p>
                  <div class="fact-box">
                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-8"></svg>
-                    <p><strong>Did you know?</strong> The nursery rhyme "London Bridge Is Falling Down" may refer to one of the many earlier versions of the bridge that have stood here since Roman times.</p>
+                    <p id="tube-status-8">Fetching tube status...</p>
                 </div>
                 <hr class="my-6 border-pink-300">
                 <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
@@ -578,13 +571,13 @@
                 <svg id="map-10" viewBox="0 0 100 100" class="w-full h-auto"></svg>
             </div>
              <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p>Perfect. One more destination before we go find our hotel at 72 Prebend Street.</p>
+                <p>Perfect. Time to go find our hotel at 72 Prebend Street (Unless you fancy some crazy golf, in which case, speak to Michael).</p>
                  <div class="fact-box">
                     <svg class="fox-mascot" viewBox="0 0 100 100" id="weather-fox-10"></svg>
-                    <p><strong>Did you know?</strong> George Orwell lived in Islington while writing parts of *Nineteen Eighty-Four*.</p>
+                    <p id="tube-status-10">Fetching tube status...</p>
                 </div>
                 <hr class="my-6 border-pink-300">
-                <p class="font-bold text-xl text-center">Your task: Travel to Islington.</p>
+                <p class="font-bold text-xl text-center">Your final task: Travel to Islington.</p>
             </div>
             <button onclick="navigateTo(11)" class="btn mt-8">I’ve Arrived at the Hotel!</button>
         </div>
@@ -602,28 +595,24 @@
         
         <!-- Page 12: Race Log -->
         <div id="page-12" class="page text-center text-white">
-            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
-            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-6">
-                <h2 class="font-bold text-2xl text-center text-pink-500">Your Race Log</h2>
-                <div class="flex justify-center my-4">
-                    <svg class="w-24 h-24" viewBox="0 0 100 100"><use href="#felix-celebrating"></use></svg>
+            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Felix's Report Card!</h1>
+            <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4">
+                <h2 class="font-bold text-2xl text-center text-pink-500">Racer: Lauren</h2>
+                <div class="text-center">
+                    <p class="text-lg"><strong>Final Grade:</strong> <span id="log-grade" class="font-bold text-green-600"></span></p>
                 </div>
-                <div class="text-xl">
+                <hr class="my-2 border-pink-300">
+                <div class="text-left space-y-2">
                     <p><strong>Checkpoints Completed:</strong> <span id="log-checkpoints"></span>/4</p>
-                </div>
-                <div class="text-xl">
-                    <p><strong>Selfies Taken:</strong> <span id="log-selfies"></span></p>
-                </div>
-                <div class="text-xl">
-                    <p><strong>Souvenirs Collected:</strong> <span id="log-souvenirs" class="text-2xl"></span></p>
-                </div>
-                <div class="text-xl">
+                    <p><strong>Souvenirs Collected:</strong> <span id="log-souvenirs" class="text-2xl align-middle"></span></p>
                     <p><strong>Total Race Time:</strong> <span id="log-time"></span></p>
+                    <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest" class="font-bold"></span></p>
                 </div>
-                 <div class="text-xl font-bold text-yellow-500">
-                    <p>🏆 <strong>Fastest Checkpoint:</strong> <span id="log-fastest"></span></p>
+                <hr class="my-2 border-pink-300">
+                <div>
+                    <h3 class="font-bold text-xl text-pink-500 text-center mb-2">Felix's Comments:</h3>
+                    <p id="log-comments" class="text-center italic"></p>
                 </div>
-                <hr class="my-4 border-pink-300">
                 <div class="mt-4 text-center">
                     <h3 class="font-bold text-xl text-pink-500">Photo Finish!</h3>
                     <p class="mb-4">Upload a victory selfie to remember this moment!</p>
@@ -635,16 +624,16 @@
                     </div>
                 </div>
                 <hr class="my-4 border-pink-300">
-                <p class="text-lg">Well done, Lauren! You've successfully completed your anniversary adventure across London. Time to relax!</p>
-                <button onclick="navigateTo(13)" class="btn mt-8">What Now?</button>
+                <p class="text-lg text-center">Well done, Lauren! You've successfully completed your anniversary adventure across London.</p>
+                <button onclick="navigateTo(13)" class="btn mt-8 mx-auto block">What Now?</button>
             </div>
         </div>
         
         <!-- Page 13: Final Suggestions -->
         <div id="page-13" class="page text-white">
-            <h1 class="font-lobster text-4xl md:text-6xl mb-6 text-center">The Adventure Continues...</h1>
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6 text-center">The Adventure Continues Tomorrow...</h1>
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-2xl text-gray-700 space-y-4 text-left">
-                <p class="text-xl text-center">...tomorrow! But for now, what would you like to do?</p>
+                <p class="text-xl text-center">...But for now, what would you like to do?</p>
                  <div class="info-box text-gray-800">
                     <h3 class="font-bold text-2xl mb-4 text-center text-pink-500">For Coffee (Hyper-Local Gems)</h3>
                     <ul class="list-disc list-inside space-y-2 mt-2">
@@ -734,13 +723,13 @@
         // --- Map Data & Functions ---
         const tubeMapData = {
             stations: {
-                hemel: { x: 5, y: 5, name: "Hemel" },
-                stanmore: { x: 20, y: 20, name: "Stanmore" },
+                hemel: { x: 5, y: 15, name: "Hemel" },
+                stanmore: { x: 25, y: 15, name: "Stanmore" },
                 warwick: { x: 45, y: 45, name: "Warwick Ave" },
                 leicester: { x: 65, y: 45, name: "Leic. Sq." },
                 greenpark: { x: 55, y: 65, name: "Green Park" },
-                londonbridge: { x: 80, y: 65, name: "Lon. Bridge" },
-                islington: { x: 80, y: 35, name: "Islington" }
+                londonbridge: { x: 85, y: 65, name: "Lon. Bridge" },
+                islington: { x: 85, y: 35, name: "Islington" }
             },
             lines: [
                 { from: 'hemel', to: 'stanmore' },
@@ -753,14 +742,13 @@
         };
 
         const riverThamesPath = `
-            <path d="M 10 75 Q 50 85, 90 55" stroke="#a2d5f2" stroke-width="6" fill="none" opacity="0.5" />
+            <path d="M 10 85 Q 50 95, 90 60" stroke="#a2d5f2" stroke-width="6" fill="none" opacity="0.5" />
         `;
 
         function drawTubeMap(svgId, currentStationKey) {
             const svg = document.getElementById(svgId);
             svg.innerHTML = riverThamesPath; 
             
-            // Draw all lines
             tubeMapData.lines.forEach((line, index) => {
                 const from = tubeMapData.stations[line.from];
                 const to = tubeMapData.stations[line.to];
@@ -777,7 +765,6 @@
                 svg.appendChild(p);
             });
 
-            // Draw all stations
             for (const key in tubeMapData.stations) {
                 const loc = tubeMapData.stations[key];
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -827,13 +814,13 @@
                     mapContainer.classList.add('zoomed');
                     setTimeout(() => mapContainer.classList.remove('zoomed'), 500);
                 }
-
-                if (pageIndex === 1) drawTubeMap('map-1', 'hemel');
-                if (pageIndex === 2) { completedPaths.push(0); drawTubeMap('map-2', 'stanmore'); }
-                if (pageIndex === 4) { completedPaths.push(1); drawTubeMap('map-4', 'warwick'); }
-                if (pageIndex === 6) { completedPaths.push(2); drawTubeMap('map-6', 'leicester'); }
-                if (pageIndex === 8) { completedPaths.push(3); drawTubeMap('map-8', 'greenpark'); }
-                if (pageIndex === 10) { completedPaths.push(4); drawTubeMap('map-10', 'londonbridge'); }
+                
+                if (pageIndex === 1) { drawTubeMap('map-1', 'hemel'); getTubeStatus('jubilee', 1); }
+                if (pageIndex === 2) { completedPaths.push(0); drawTubeMap('map-2', 'stanmore'); getTubeStatus('jubilee', 2); }
+                if (pageIndex === 4) { completedPaths.push(1); drawTubeMap('map-4', 'warwick'); getTubeStatus('bakerloo', 4); }
+                if (pageIndex === 6) { completedPaths.push(2); drawTubeMap('map-6', 'leicester'); getTubeStatus('jubilee', 6); }
+                if (pageIndex === 8) { completedPaths.push(3); drawTubeMap('map-8', 'greenpark'); getTubeStatus('jubilee', 8); }
+                if (pageIndex === 10) { completedPaths.push(4); drawTubeMap('map-10', 'londonbridge'); getTubeStatus('northern', 10); }
                 
                 if ([3, 5, 7, 9].includes(pageIndex)) {
                     questionStartTime = new Date();
@@ -859,7 +846,7 @@
                     } else {
                         fastestLogEl.textContent = 'N/A';
                     }
-
+                    generateFelixComments();
                     launchConfetti();
                 }
 
@@ -1006,22 +993,18 @@
                     
                     const userImage = new Image();
                     userImage.onload = function() {
-                        // Match canvas to image dimensions
                         canvas.width = userImage.width;
                         canvas.height = userImage.height;
-                        
-                        // Draw user image to hidden img tag to get it on the page
                         imgEl.src = e.target.result;
                         container.style.display = 'block';
 
-                        // Draw photobomb fox
                         const foxSVG = document.getElementById('felix-photobomb');
                         const foxXML = new XMLSerializer().serializeToString(foxSVG);
                         const foxDataURL = 'data:image/svg+xml;base64,' + btoa(foxXML);
                         
                         const foxImage = new Image();
                         foxImage.onload = function() {
-                            const foxSize = canvas.width * 0.25; // Fox is 25% of image width
+                            const foxSize = canvas.width * 0.25;
                             const margin = canvas.width * 0.05;
                             ctx.drawImage(foxImage, canvas.width - foxSize - margin, canvas.height - foxSize - margin, foxSize, foxSize);
                         };
@@ -1080,37 +1063,46 @@
                 requestAnimationFrame(animateConfetti);
             }
         }
+        
+        // --- Report Card ---
+        function generateFelixComments() {
+            let comments = "A truly fantastic performance! ";
+            if (checkpointsCompleted === 4) {
+                comments += "You completed every single checkpoint - brilliant!";
+            } else {
+                comments += `You gave it a great go, completing ${checkpointsCompleted} checkpoints.`;
+            }
+            
+            const fastestCp = document.getElementById('log-fastest').textContent;
+            if (fastestCp.includes('4')) {
+                comments += " I see you were particularly quick to find the pub... very clever!";
+            }
+            
+            document.getElementById('log-grade').textContent = "A+ (for Awesome Adventurer)";
+            document.getElementById('log-comments').textContent = comments;
+        }
 
-        // --- Weather ---
-        async function getLondonWeather() {
+        // --- Live Status ---
+        async function getTubeStatus(lineId, pageNum) {
+            const statusEl = document.getElementById(`tube-status-${pageNum}`);
             try {
-                const response = await fetch('https://wttr.in/London?format=j1');
+                const response = await fetch(`https://api.tfl.gov.uk/Line/${lineId}/Status`);
                 const data = await response.json();
-                const weatherDesc = data.current_condition[0].weatherDesc[0].value.toLowerCase();
-                
-                let weatherFoxId = 'felix-the-fox';
-                if (weatherDesc.includes('rain') || weatherDesc.includes('shower') || weatherDesc.includes('drizzle')) {
-                    weatherFoxId = 'felix-rainy';
-                } else if (weatherDesc.includes('sunny') || weatherDesc.includes('clear')) {
-                    weatherFoxId = 'felix-sunny';
+                const status = data[0].lineStatuses[0].statusSeverityDescription;
+                if (status === 'Good Service') {
+                    statusEl.textContent = `Good news! The ${data[0].name} line has a good service. Onwards!`;
+                } else {
+                    statusEl.textContent = `Oh dear, the ${data[0].name} line has ${status.toLowerCase()}. Best be quick!`;
                 }
-                
-                document.querySelectorAll('[id^="weather-fox-"]').forEach(el => {
-                    el.innerHTML = `<use href="#${weatherFoxId}"></use>`;
-                });
-
             } catch (error) {
-                console.error("Couldn't fetch weather data.", error);
-                 document.querySelectorAll('[id^="weather-fox-"]').forEach(el => {
-                    el.innerHTML = `<use href="#felix-the-fox"></use>`;
-                });
+                console.error("Couldn't fetch tube status.", error);
+                statusEl.textContent = "Could not fetch live tube status. Good luck!";
             }
         }
 
         // Initialize first page
         document.addEventListener('DOMContentLoaded', () => {
              pages[0].classList.add('active');
-             getLondonWeather();
         });
     </script>
 
