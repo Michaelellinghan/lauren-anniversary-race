@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Lobster&family=Kalam&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -27,6 +27,10 @@
 
         .font-lobster {
             font-family: 'Lobster', cursive;
+        }
+
+        .font-kalam {
+            font-family: 'Kalam', cursive;
         }
 
         .page {
@@ -152,6 +156,18 @@
             margin: 0 5px;
         }
 
+        .sticky-note {
+            @apply bg-yellow-200 text-gray-800 p-4 rounded-lg shadow-lg font-kalam text-lg my-4 text-center;
+            transform: rotate(-2deg);
+            opacity: 0;
+            animation: slide-in-fade 0.6s forwards 0.5s;
+        }
+
+        @keyframes slide-in-fade {
+            from { opacity: 0; transform: translateX(-20px) rotate(-5deg); }
+            to { opacity: 1; transform: translateX(0) rotate(-2deg); }
+        }
+
     </style>
 </head>
 <body class="text-gray-100">
@@ -202,19 +218,19 @@
             <h2 class="text-2xl md:text-3xl font-bold mb-8">A special 7th anniversary adventure!</h2>
             
             <div class="content-card text-white space-y-4 text-left">
-                <p class="text-lg">Welcome to your Race Across London! (Legally different from Race Across the World 😉)</p>
-                <p>Lauren, I hope you’re ready for a special anniversary adventure I have prepared for you!</p>
-                <p>This is your very own 'Race Across London' – an exciting journey with various checkpoints and questions!</p>
+                <p class="text-lg text-center">Welcome to your Race Across London! (Legally different from Race Across the World 😉)</p>
+                <p class="text-center">Lauren, I hope you’re ready for a special anniversary adventure I have prepared for you!</p>
+                <p class="text-center">This is your very own 'Race Across London' – an exciting journey with various checkpoints and questions!</p>
                 <p class="text-sm text-center italic text-red-400">P.S. You can press the red 'STOP' button at any time to pause the race timer!</p>
                 <hr class="my-6 border-pink-300/50">
-                <h3 class="font-bold text-xl text-pink-400">Pre-Race Challenge:</h3>
-                <p>Your first mission is to prepare a suitcase for 4 days and head to 78 Tattershall drive!</p>
-                <p>We’ll head to Hemel today, whenever my parents arrive and you are ready. We’ll be staying in London for one night tomorrow, and in Hemel until Sunday.</p>
+                <h3 class="font-bold text-xl text-pink-400 text-center">Pre-Race Challenge:</h3>
+                <p class="text-center">Your first mission is to prepare a suitcase for 4 days and head to 78 Tattershall drive!</p>
+                <p class="text-center">We’ll head to Hemel today, whenever my parents arrive and you are ready. We’ll be staying in London for one night tomorrow, and in Hemel until Sunday.</p>
                 <div class="text-center mt-4">
                     <a href="https://open.spotify.com/playlist/3zak3JRIo9gCVaVSDCeX4E?si=RMvaHnVGR9GryPZo2nLmUA&pt=c3c979cb72f5861ef5371e67ec255ce4&pi=KKMZNPxJQU2xC" target="_blank" class="btn">Singalong Playlist! 🎶</a>
                 </div>
                 <hr class="my-6 border-pink-300/50">
-                <p class="font-bold text-center">The main race starts on <span class="text-pink-400">26th July 2025</span>! Come back then to begin your grand journey!</p>
+                <p class="font-bold text-center">The main race starts on <span class="text-pink-400">25th July 2025</span>! Come back then to begin your grand journey!</p>
             </div>
 
             <button id="start-race-btn" onclick="navigateTo(1)" class="btn mt-8">Start Your London Race</button>
@@ -226,7 +242,8 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Your Grand Adventure Begins!</h1>
             <div class="content-card text-white space-y-4 text-left">
                 <h2 class="font-bold text-2xl text-center text-pink-400">Destination: Stanmore Station!</h2>
-                <p>Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
+                <div class="sticky-note">You're doing amazing already!</div>
+                <p class="text-center">Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your first mission: From 22 Kennedy Drive, NG9 8HT, travel to Stanmore Train Station, HA7 2DX. Travel however you like!</p>
             </div>
@@ -238,7 +255,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">To 'Little Venice'</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-2" class="text-center"></div>
-                <p>Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
+                <p class="text-center">Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
             </div>
@@ -272,7 +289,7 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4">The nearest is the <span class="font-bold">Mary's Living & Giving Shop for Save the Children</span> on Clifton Road. It's a lovely boutique-style charity shop!</p>
+                    <p class="mb-4 text-center">The nearest is the <span class="font-bold">Mary's Living & Giving Shop for Save the Children</span> on Clifton Road. It's a lovely boutique-style charity shop!</p>
                     <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Coffee Shop:</b> Cafe Laville is a unique café that sits directly over the canal, offering lovely views.</li>
@@ -296,7 +313,8 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Heart of Theatreland</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-4" class="text-center"></div>
-                <p>Well done! Now, let's head to the heart of Theatreland.</p>
+                <p class="text-center">Well done! Now, let's head to the heart of Theatreland.</p>
+                <div class="sticky-note">You're a superstar navigator!</div>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
             </div>
@@ -330,7 +348,7 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4">There are several nearby! Try the <span class="font-bold">Oxfam</span> on Drury Lane for books, or the <span class="font-bold">Fara</span> shop on Covent Garden's Langley Street.</p>
+                    <p class="mb-4 text-center">There are several nearby! Try the <span class="font-bold">Oxfam</span> on Drury Lane for books, or the <span class="font-bold">Fara</span> shop on Covent Garden's Langley Street.</p>
                     <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops (sorry, we’re not eating here):</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Coffee Shop:</b> Abuelo is a lovely, relaxed Australian-meets-South American café just around the corner.</li>
@@ -356,7 +374,8 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">A Touch of Grandeur</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-6" class="text-center"></div>
-                <p>Great job! Now it’s time for a touch of grandeur.</p>
+                <p class="text-center">Great job! Now it’s time for a touch of grandeur.</p>
+                <div class="sticky-note">I hope this isn't 'priv-ar-te property' we're exploring... 😉</div>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your task: Travel to Green Park.</p>
             </div>
@@ -390,7 +409,7 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4">You're in a prime spot for posh charity shops! The <span class="font-bold">Oxfam Boutique</span> on Piccadilly is just a short walk away.</p>
+                    <p class="mb-4 text-center">You're in a prime spot for posh charity shops! The <span class="font-bold">Oxfam Boutique</span> on Piccadilly is just a short walk away.</p>
                     <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Coffee Shop:</b> Colicci at the entrance to Green Park offers coffee and snacks with a view.</li>
@@ -415,7 +434,7 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Cross the River</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-8" class="text-center"></div>
-                <p>Great job! Now it’s time to cross the river.</p>
+                <p class="text-center">Great job! Now it’s time to cross the river.</p>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
             </div>
@@ -449,7 +468,7 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4">The <span class="font-bold">British Heart Foundation</span> shop on Borough High Street is your best bet for a bargain hunt nearby!</p>
+                    <p class="mb-4 text-center">The <span class="font-bold">British Heart Foundation</span> shop on Borough High Street is your best bet for a bargain hunt nearby!</p>
                     <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
                         <li><b>Coffee Shop:</b> Monmouth Coffee Company in Borough Market is famous for its exceptional coffee.</li>
@@ -469,12 +488,13 @@
             </div>
         </div>
         
-        <!-- Page 10: Islington Travel -->
+        <!-- Page 10: The Strand Travel -->
         <div id="page-10" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">The Final Leg!</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-10" class="text-center"></div>
-                <p>Perfect. Time to go find our hotel, the Strand Palace Hotel (Unless you fancy some crazy golf, in which case, speak to Michael).</p>
+                <p class="text-center">Perfect. Time to go find our hotel, the Strand Palace Hotel.</p>
+                <div class="sticky-note">You're nearly there! Just hope there are no thunderstorms... we wouldn't want to be evacuated! 😂</div>
                 <hr class="my-6 border-pink-300/50">
                 <p class="font-bold text-xl text-center">Your final task: Travel to The Strand.</p>
             </div>
@@ -494,7 +514,7 @@
         
         <!-- Page 12: Race Log -->
         <div id="page-12" class="page text-center text-white">
-            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Race Complete!</h1>
+            <h1 class="font-lobster text-5xl md:text-7xl mb-4">Michael's Report Card!</h1>
             <div class="content-card space-y-4">
                 <h2 class="font-bold text-2xl text-center text-pink-400">Racer: Lauren</h2>
                 <div class="text-center">
@@ -509,7 +529,7 @@
                 </div>
                 <hr class="my-2 border-pink-300/50">
                 <div>
-                    <h3 class="font-bold text-xl text-pink-400 text-center mb-2">Felix's Comments:</h3>
+                    <h3 class="font-bold text-xl text-pink-400 text-center mb-2">Michael's Comments:</h3>
                     <p id="log-comments" class="text-center italic"></p>
                 </div>
                 <div id="final-selfie-prompt" class="mt-4 p-4 bg-pink-400/30 text-white rounded-lg text-center font-bold">
@@ -527,18 +547,15 @@
             <div class="content-card space-y-4 text-left">
                 <p class="text-xl text-center">...But for now, what would you like to do?</p>
                  <div class="info-box text-white">
-                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-400">For Coffee</h3>
-                    <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>WatchHouse, Somerset House:</b> A stunning café set in the courtyard of a historic building.</li>
-                        <li><b>The Black Penny:</b> A cosy and popular spot on Great Queen Street, known for excellent coffee.</li>
-                    </ul>
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-400">Charity Shop Finds:</h3>
+                    <p class="text-center">You're in a prime spot! There's an <span class="font-bold">Oxfam</span> on Drury Lane and another on the Strand itself, plus a <span class="font-bold">Fara</span> in Covent Garden.</p>
                 </div>
                  <div class="info-box text-white">
-                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-400">For a Celebratory Lunch or Dinner</h3>
+                    <h3 class="font-bold text-2xl mb-4 text-center text-pink-400">Cheap & Cheerful Eats</h3>
                     <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>The Savoy Grill:</b> For the ultimate classic glamour and a touch of Gordon Ramsay magic.</li>
-                        <li><b>Rules:</b> London's oldest restaurant, serving traditional British food in a historic setting.</li>
-                        <li><b>Joe Allen:</b> A legendary theatreland restaurant with a buzzy, American brasserie atmosphere.</li>
+                        <li><b>Homeslice Pizza, Neal's Yard:</b> Famous for their huge 20-inch pizzas, you can buy by the slice for a quick, delicious, and cheap meal.</li>
+                        <li><b>Seven Dials Market:</b> A brilliant indoor food market with dozens of stalls serving everything from tacos to bao buns. Great for variety!</li>
+                        <li><b>Flat Iron:</b> A very popular spot for a high-quality steak and chips for a surprisingly low price.</li>
                     </ul>
                 </div>
                  <div class="info-box text-white">
@@ -571,7 +588,6 @@
         let questionStartTime;
         const checkpointTimes = {};
         let collectedSouvenirs = [];
-        let completedPaths = [];
 
         // --- Countdown Timer ---
         const countdownDate = new Date("2025-07-26T14:30:00").getTime();
@@ -607,14 +623,14 @@
             startMessage.textContent = "Click to preview the race!";
 
         }, 1000);
-
-        // --- Map Data & Functions ---
+        
+        // --- Simple Map ---
         function drawSimpleMap(containerId, fromName, toName) {
             const container = document.getElementById(containerId);
             if (!container) return;
             container.innerHTML = `
-                <div class="flex justify-center items-center text-center text-lg font-bold p-4">
-                    <span>${fromName}</span>
+                <div class="flex justify-center items-center text-center text-lg font-bold p-4 text-white">
+                    <span class="bg-pink-500/50 p-2 rounded-lg">${fromName}</span>
                     <svg width="100" height="20" class="mx-4">
                         <line x1="10" y1="10" x2="90" y2="10" stroke="white" stroke-width="2" stroke-dasharray="5,5" />
                         <circle cx="90" cy="10" r="4" fill="#e73c7e" />
@@ -623,7 +639,6 @@
                 </div>
             `;
         }
-
 
         // --- Navigation ---
         function navigateTo(pageIndex) {
@@ -672,7 +687,7 @@
                     } else {
                         fastestLogEl.textContent = 'N/A';
                     }
-                    generateFelixComments();
+                    generateMichaelsComments();
                     launchConfetti();
                 }
 
@@ -855,19 +870,13 @@
         }
         
         // --- Report Card ---
-        function generateFelixComments() {
-            let comments = "A truly fantastic performance! ";
-            if (checkpointsCompleted === 4) {
-                comments += "You completed every single checkpoint - brilliant!";
-            } else {
-                comments += `You gave it a great go, completing ${checkpointsCompleted} checkpoints.`;
-            }
-            
-            const fastestCp = document.getElementById('log-fastest').textContent;
-            if (fastestCp.includes('4')) {
-                comments += " I see you were particularly quick to find the pub... very clever!";
-            }
-            
+        function generateMichaelsComments() {
+            let comments = "What a brilliant race! ";
+            const timeText = document.getElementById('log-time').textContent;
+            comments += `You finished in ${timeText} - not bad at all! I hope you didn't trespass on any 'priv-ar-te property' to get that time! `;
+            comments += "Let's hope there are no thunderstorms that force an evacuation this time. ";
+            comments += "You're the best travel partner I could ask for, and definitely my number 27. Happy Anniversary!"
+
             document.getElementById('log-grade').textContent = "A+ (for Awesome Adventurer)";
             document.getElementById('log-comments').textContent = comments;
         }
