@@ -93,18 +93,6 @@
             font-size: 1.5rem;
         }
 
-        #train {
-            position: absolute;
-            left: -200px; /* Start off-screen */
-            width: 150px;
-            animation: move-train 1.2s ease-in-out forwards;
-        }
-
-        @keyframes move-train {
-            0% { left: -200px; }
-            100% { left: 100vw; } /* Move across the full screen width */
-        }
-
         /* Emergency Stop Button & Modal */
         #emergency-btn {
             position: fixed;
@@ -189,9 +177,6 @@
     <!-- Train Transition Overlay -->
     <div id="train-transition">
         <p class="font-lobster text-white text-2xl mb-4">Minding the gap...</p>
-        <svg id="train" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
-            <use href="#train-body"/>
-        </svg>
     </div>
 
     <!-- Emergency Stop Modal -->
@@ -237,15 +222,15 @@
             <p id="start-race-message" class="mt-2 text-white/80"></p>
         </div>
 
-        <!-- Page 1: Stanmore Start -->
+        <!-- Page 1: Bushey Start -->
         <div id="page-1" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Your Grand Adventure Begins!</h1>
             <div class="content-card text-white space-y-4 text-left">
-                <h2 class="font-bold text-2xl text-center text-pink-400">Destination: Stanmore Station!</h2>
+                <h2 class="font-bold text-2xl text-center text-pink-400">Destination: Bushey!</h2>
                 <div class="sticky-note">You're doing amazing already!</div>
-                <p class="text-center">Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to Stanmore Train Station in London. Here’s the catch though… No phones allowed, except to view this website! Michael will provide you with a map of London, but you must work out the rest yourself! I hope you remember the way 🤨</p>
+                <p class="text-center">Welcome to your very own Race Across London Lauren! Your first mission is to get from 78 Tattershall Drive, all the way to 3 Rowley Close in Bushey, Watford. Here’s the catch though… No phones allowed, except to view this website! I hope you remember the way 🤨</p>
                 <hr class="my-6 border-pink-300/50">
-                <p class="font-bold text-xl text-center">Your first mission: From 22 Kennedy Drive, NG9 8HT, travel to Stanmore Train Station, HA7 2DX. Travel however you like!</p>
+                <p class="font-bold text-xl text-center">Your first mission: Travel to 3 Rowley Close, Bushey, Watford.</p>
             </div>
             <button onclick="navigateTo(2)" class="btn mt-8">Next Stage</button>
         </div>
@@ -255,14 +240,14 @@
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">To 'Little Venice'</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-2" class="text-center"></div>
-                <p class="text-center">Excellent! You've made it to Stanmore, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
+                <p class="text-center">Excellent! You've made it to Bushey, the gateway to your London adventure. Our first destination takes you to the charming waterways of 'Little Venice'.</p>
                 <hr class="my-6 border-pink-300/50">
-                <p class="font-bold text-xl text-center">Your task: From Stanmore Station, travel to Warwick Avenue.</p>
+                <p class="font-bold text-xl text-center">Your task: From Bushey, travel to Warwick Avenue.</p>
             </div>
             <button onclick="navigateTo(3)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Page 3: Checkpoint 1 -->
+        <!-- Page 3: Checkpoint 1 (Bristol Gardens) -->
         <div id="page-3" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 1</h1>
             <div class="content-card text-white space-y-4 text-left">
@@ -308,27 +293,27 @@
             </div>
         </div>
         
-        <!-- Page 4: Leicester Square Travel -->
+        <!-- Page 4: London Bridge Travel -->
         <div id="page-4" class="page text-center text-white">
-            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Heart of Theatreland</h1>
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">To a Historic Pub</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-4" class="text-center"></div>
-                <p class="text-center">Well done! Now, let's head to the heart of Theatreland.</p>
+                <p class="text-center">Well done! Now, let's head across the river for a bit of history.</p>
                 <div class="sticky-note">You're a superstar navigator!</div>
                 <hr class="my-6 border-pink-300/50">
-                <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
+                <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
             </div>
             <button onclick="navigateTo(5)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Page 5: Checkpoint 2 -->
+        <!-- Page 5: Checkpoint 2 (George Inn) -->
         <div id="page-5" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 2</h1>
             <div class="content-card text-white space-y-4 text-left">
-                <p class="text-center">Find a famous restaurant located on West Street with ties to one of our children.</p>
+                <p class="text-center">Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
                 <hr class="my-6 border-pink-300/50">
                 <h3 class="font-bold text-xl text-center text-pink-400">Question:</h3>
-                <p class="text-center">What letter is repeated twice on the clock?</p>
+                <p class="text-center">When was this inn established?</p>
                 
                 <div class="mt-4 text-center">
                     <input id="answer-2" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300/50 focus:ring-pink-400 focus:border-pink-400 text-center bg-white/20" placeholder="Your answer here">
@@ -348,18 +333,17 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4 text-center">There are several nearby! Try the <span class="font-bold">Oxfam</span> on Drury Lane for books, or the <span class="font-bold">Fara</span> shop on Covent Garden's Langley Street.</p>
-                    <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops (sorry, we’re not eating here):</h4>
+                    <p class="mb-4 text-center">The <span class="font-bold">British Heart Foundation</span> shop on Borough High Street is your best bet for a bargain hunt nearby!</p>
+                    <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>Coffee Shop:</b> Abuelo is a lovely, relaxed Australian-meets-South American café just around the corner.</li>
-                        <li><b>Lunch Restaurant:</b> Dishoom Covent Garden is an incredibly popular spot for delicious Bombay-inspired food.</li>
+                        <li><b>Coffee Shop:</b> Monmouth Coffee Company in Borough Market is famous for its exceptional coffee.</li>
+                        <li><b>Lunch Restaurant:</b> You are spoilt for choice at Borough Market! Or pop in the George Inn!</li>
                     </ul>
                     <h4 class="font-bold text-lg mt-4 text-pink-400">Other Places to Check Out:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>Neal's Yard:</b> A must-see hidden gem, exploding with colour.</li>
-                        <li><b>The London Transport Museum:</b> Given the theme of the race, this is very fitting!</li>
-                        <li><b>Covent Garden's Street Performers:</b> Soak up the lively atmosphere.</li>
-                        <li><b>Evening Plans:</b> We could come back for 9:05 to see Rachel Zegler on the balcony of the London Palladium!</li>
+                        <li><b>Southwark Cathedral:</b> This stunning Gothic cathedral is literally next door to Borough Market.</li>
+                        <li><b>The Golden Hinde:</b> A beautiful full-size reconstruction of Sir Francis Drake's 16th-century galleon.</li>
+                        <li><b>Shakespeare's Globe:</b> A little further along the river bank is the famous Globe theatre.</li>
                     </ul>
                     <div id="selfie-prompt-2" class="mt-4 p-4 bg-pink-400/30 text-white rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
@@ -382,7 +366,7 @@
             <button onclick="navigateTo(7)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Page 7: Checkpoint 3 -->
+        <!-- Page 7: Checkpoint 3 (Downton Abbey) -->
         <div id="page-7" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 3</h1>
             <div class="content-card text-white space-y-4 text-left">
@@ -429,26 +413,26 @@
             </div>
         </div>
 
-        <!-- Page 8: London Bridge Travel -->
+        <!-- Page 8: Leicester Square Travel -->
         <div id="page-8" class="page text-center text-white">
-            <h1 class="font-lobster text-4xl md:text-6xl mb-6">Cross the River</h1>
+            <h1 class="font-lobster text-4xl md:text-6xl mb-6">To The Ivy</h1>
              <div class="content-card text-white space-y-4 text-left">
                 <div id="map-container-8" class="text-center"></div>
-                <p class="text-center">Great job! Now it’s time to cross the river.</p>
+                <p class="text-center">Great job! Now it’s time for a touch of theatrical glamour.</p>
                 <hr class="my-6 border-pink-300/50">
-                <p class="font-bold text-xl text-center">Your task: Travel to London Bridge.</p>
+                <p class="font-bold text-xl text-center">Your task: Travel to Leicester Square.</p>
             </div>
             <button onclick="navigateTo(9)" class="btn mt-8">I’ve Arrived</button>
         </div>
 
-        <!-- Page 9: Checkpoint 4 -->
+        <!-- Page 9: Checkpoint 4 (The Ivy) -->
         <div id="page-9" class="page text-center text-white">
             <h1 class="font-lobster text-4xl md:text-6xl mb-6">Checkpoint 4</h1>
             <div class="content-card text-white space-y-4 text-left">
-                <p class="text-center">Find London's last remaining galleried coaching inn. This historic pub is tucked away on Borough High St near London's most famous food market.</p>
+                <p class="text-center">Find a famous restaurant located on West Street with ties to one of our children.</p>
                 <hr class="my-6 border-pink-300/50">
                 <h3 class="font-bold text-xl text-center text-pink-400">Question:</h3>
-                <p class="text-center">When was this inn established?</p>
+                <p class="text-center">What letter is repeated twice on the clock?</p>
                 
                 <div class="mt-4 text-center">
                     <input id="answer-4" type="text" class="w-full max-w-sm p-3 rounded-lg border-2 border-pink-300/50 focus:ring-pink-400 focus:border-pink-400 text-center bg-white/20" placeholder="Your answer here">
@@ -468,17 +452,18 @@
                  <div class="content-card">
                     <h3 class="font-bold text-2xl mb-4 text-center">Local Highlights</h3>
                     <h4 class="font-bold text-lg text-pink-400">Charity Shop Find:</h4>
-                    <p class="mb-4 text-center">The <span class="font-bold">British Heart Foundation</span> shop on Borough High Street is your best bet for a bargain hunt nearby!</p>
-                    <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops:</h4>
+                    <p class="mb-4 text-center">There are several nearby! Try the <span class="font-bold">Oxfam</span> on Drury Lane for books, or the <span class="font-bold">Fara</span> shop on Covent Garden's Langley Street.</p>
+                    <h4 class="font-bold text-lg text-pink-400">Coffee & Lunch Stops (sorry, we’re not eating here):</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>Coffee Shop:</b> Monmouth Coffee Company in Borough Market is famous for its exceptional coffee.</li>
-                        <li><b>Lunch Restaurant:</b> You are spoilt for choice at Borough Market! Or pop in the George Inn!</li>
+                        <li><b>Coffee Shop:</b> Abuelo is a lovely, relaxed Australian-meets-South American café just around the corner.</li>
+                        <li><b>Lunch Restaurant:</b> Dishoom Covent Garden is an incredibly popular spot for delicious Bombay-inspired food.</li>
                     </ul>
                     <h4 class="font-bold text-lg mt-4 text-pink-400">Other Places to Check Out:</h4>
                     <ul class="list-disc list-inside space-y-2 mt-2">
-                        <li><b>Southwark Cathedral:</b> This stunning Gothic cathedral is literally next door to Borough Market.</li>
-                        <li><b>The Golden Hinde:</b> A beautiful full-size reconstruction of Sir Francis Drake's 16th-century galleon.</li>
-                        <li><b>Shakespeare's Globe:</b> A little further along the river bank is the famous Globe theatre.</li>
+                        <li><b>Neal's Yard:</b> A must-see hidden gem, exploding with colour.</li>
+                        <li><b>The London Transport Museum:</b> Given the theme of the race, this is very fitting!</li>
+                        <li><b>Covent Garden's Street Performers:</b> Soak up the lively atmosphere.</li>
+                        <li><b>Evening Plans:</b> We could come back for 9:05 to see Rachel Zegler on the balcony of the London Palladium!</li>
                     </ul>
                     <div id="selfie-prompt-4" class="mt-4 p-4 bg-pink-400/30 text-white rounded-lg text-center font-bold" style="display: none;"></div>
                 </div>
@@ -651,17 +636,17 @@
             trainTransition.style.display = 'flex';
             
             setTimeout(() => {
-                pages[currentPage].classList.remove('active');
+                pages.forEach(p => p.classList.remove('active'));
+                pages[pageIndex].classList.add('active');
                 currentPage = pageIndex;
-                pages[currentPage].classList.add('active');
                 window.scrollTo(0, 0);
                 trainTransition.style.display = 'none';
                 
-                if (pageIndex === 2) { drawSimpleMap('map-container-2', 'Stanmore', 'Warwick Ave'); }
-                if (pageIndex === 4) { drawSimpleMap('map-container-4', 'Warwick Ave', 'Leicester Sq'); }
-                if (pageIndex === 6) { drawSimpleMap('map-container-6', 'Leicester Sq', 'Green Park'); }
-                if (pageIndex === 8) { drawSimpleMap('map-container-8', 'Green Park', 'London Bridge'); }
-                if (pageIndex === 10) { drawSimpleMap('map-container-10', 'London Bridge', 'The Strand'); }
+                if (pageIndex === 2) { drawSimpleMap('map-container-2', 'Bushey', 'Warwick Avenue'); }
+                if (pageIndex === 4) { drawSimpleMap('map-container-4', 'Warwick Avenue', 'London Bridge'); }
+                if (pageIndex === 6) { drawSimpleMap('map-container-6', 'London Bridge', 'Green Park'); }
+                if (pageIndex === 8) { drawSimpleMap('map-container-8', 'Green Park', 'Leicester Square'); }
+                if (pageIndex === 10) { drawSimpleMap('map-container-10', 'Leicester Square', 'The Strand'); }
                 
                 if ([3, 5, 7, 9].includes(pageIndex)) {
                     questionStartTime = new Date();
@@ -696,28 +681,28 @@
 
         // --- Quiz Logic ---
         const souvenirs = {
-            1: 'souvenir-phonebox', 2: 'souvenir-masks', 3: 'souvenir-crown', 4: 'souvenir-beer'
+            1: 'souvenir-phonebox', 2: 'souvenir-beer', 3: 'souvenir-crown', 4: 'souvenir-masks'
         };
 
         const answers = {
             1: { accepted: ['a phone box', 'phone box', 'a telephone box', 'telephone box', 'red phone box', 'red telephone box'], reveal: 'A phone box' },
-            2: { accepted: ['v'], reveal: 'V' },
+            2: { accepted: ['1542'], reveal: '1542' },
             3: { accepted: ['a lion', 'lion'], reveal: 'A Lion' },
-            4: { accepted: ['1542'], reveal: '1542' }
+            4: { accepted: ['v'], reveal: 'V' }
         };
 
         const hints = {
             1: "Think of a classic red box, used for making calls before mobiles existed.",
-            2: "This letter is also a Roman numeral.",
+            2: "It was established during the reign of King Henry VIII.",
             3: "It's known as the 'king of the jungle'.",
-            4: "It was established during the reign of King Henry VIII."
+            4: "This letter is also a Roman numeral."
         };
 
         const selfiePrompts = {
             1: "Time for a victory selfie! Pose like you're making a top-secret call in your new-found phone box!",
-            2: "Selfie time! Point dramatically at the clock like you've just solved a great mystery.",
+            2: "Success! Time for a historical selfie. Pose with your best 'cheers' as if you're a 16th-century traveller enjoying a pint!",
             3: "You found it! Quick, a selfie! Look regal and pretend you own the place. Give us your best royal wave!",
-            4: "Success! Time for a historical selfie. Pose with your best 'cheers' as if you're a 16th-century traveller enjoying a pint!"
+            4: "Selfie time! Point dramatically at the clock like you've just solved a great mystery."
         };
 
         function checkAnswer(checkpoint) {
